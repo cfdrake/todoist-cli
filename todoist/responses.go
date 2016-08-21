@@ -11,7 +11,7 @@ type ItemResponse struct {
 	Id        int
 	Content   string
 	Indent    int
-	ProjectID int
+	ProjectId int `json:"project_id"`
 }
 
 // Represents a Project.

@@ -30,11 +30,23 @@ func init() {
 
 	// Setup app interface.
 	app = cli.NewApp()
+	app.Usage = "Todoist.com command line client"
+	app.Version = "0.1.0"
+	app.Authors = []cli.Author{
+		cli.Author{
+			Name:  "Colin Drake",
+			Email: "todoist-support@colinfdrake.fastmail.com",
+		},
+	}
 	app.Commands = []cli.Command{
 		{
 			Name:    "project",
 			Aliases: []string{"p", "projects"},
 			Usage:   "Commands for projects",
+			Action: func(c *cli.Context) error {
+				displayAllProjects(client)
+				return nil
+			},
 			Subcommands: []cli.Command{
 				{
 					Name:    "show",

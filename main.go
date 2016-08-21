@@ -1,12 +1,12 @@
 package main
 
 import (
-  "flag"
+	"flag"
 )
 
 import "github.com/cfdrake/todoist-cli/cli"
 
 func main() {
-  args := flag.Args()
-  cli.Execute(args)
+	args := flag.Args()
+	cli.Execute(args)
 }

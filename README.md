@@ -1,4 +1,4 @@
-# todoist-cli
+# todoist-cli [![Build Status](https://travis-ci.org/cfdrake/todoist-cli.svg?branch=master)](https://travis-ci.org/cfdrake/todoist-cli)
 
 A simple commandline interface for managing [Todoist](http://todoist.com) projects and items.
 

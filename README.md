@@ -1,6 +1,6 @@
 # todoist-cli
 
-A simple commandline interface for [Todoist](http://todoist.com) projects and items.
+A simple commandline interface for managing [Todoist](http://todoist.com) projects and items.
 
 ## Installation
 

@@ -8,7 +8,7 @@ type SyncResponse struct {
 
 // Represents an Item.
 type ItemResponse struct {
-	ID        int
+	Id        int
 	Content   string
 	Indent    int
 	ProjectID int
@@ -16,7 +16,7 @@ type ItemResponse struct {
 
 // Represents a Project.
 type ProjectResponse struct {
-	ID     int
+	Id     int
 	Name   string
 	Indent int
 }

@@ -81,29 +81,28 @@ func (c *Client) callSyncService(syncToken string, resourceTypes []ResourceTyper
 	return model, nil
 }
 
+// Fetches all data for the given user.
 func (c *Client) FetchAllData() (*SyncResponse, error) {
 	types := []ResourceTyper{allDataResourceType}
 	return c.callSyncService(initialSyncToken, types)
 }
 
+// Fetches project and item data for the user.
 func (c *Client) FetchProjectsAndItems() (*[]ProjectResponse, *[]ItemResponse, error) {
 	types := []ResourceTyper{projectsResourceType, itemsResourceType}
-	resp, err := c.callSyncService(initialSyncToken, types)
-
-	if err != nil {
+	if resp, err := c.callSyncService(initialSyncToken, types); err != nil {
 		return nil, nil, err
+	} else {
+		return &resp.Projects, &resp.Items, nil
 	}
-
-	return &resp.Projects, &resp.Items, nil
 }
 
+// Fetches project data for the user.
 func (c *Client) FetchProjects() (*[]ProjectResponse, error) {
 	types := []ResourceTyper{projectsResourceType}
-	resp, err := c.callSyncService(initialSyncToken, types)
-
-	if err != nil {
+	if resp, err := c.callSyncService(initialSyncToken, types); err != nil {
 		return nil, err
+	} else {
+		return &resp.Projects, nil
 	}
-
-	return &resp.Projects, nil
 }

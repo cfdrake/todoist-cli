@@ -2,7 +2,6 @@ package cli
 
 import (
 	"fmt"
-	"os"
 	"strconv"
 )
 
@@ -15,16 +14,14 @@ func handleProjectsCommand(client todoist.Client, args []string) {
 	} else if id, err := strconv.Atoi(args[0]); err == nil {
 		displayProject(id, client)
 	} else {
-		fmt.Fprintf(os.Stderr, "ERROR: No such subcommand...\n")
-		os.Exit(1)
+		die("ERROR: No such subcommand...")
 	}
 }
 
 func displayAllProjects(client todoist.Client) {
 	projects, err := client.FetchProjects()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "ERROR: Could not fetch projects...\n")
-		os.Exit(1)
+		die("ERROR: Could not fetch projects...")
 	}
 
 	fmt.Println(chalk.Bold.TextStyle("All Projects"))
@@ -44,8 +41,7 @@ func displayAllProjects(client todoist.Client) {
 func displayProject(id int, client todoist.Client) {
 	resp, err := client.FetchAllData()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "ERROR: Could not fetch projects and/or items...\n")
-		os.Exit(1)
+		die("ERROR: Could not fetch projects and/or items...")
 	}
 
 	for _, project := range resp.Projects {

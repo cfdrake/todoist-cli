@@ -10,7 +10,7 @@ import "github.com/vaughan0/go-ini"
 
 // Configuration file representation.
 type Config struct {
-	AuthToken string // Personal token used to authenticate with the REST API.
+	UserToken string // Personal token used to authenticate with the REST API.
 }
 
 // Loads configuration for the given user.
@@ -31,5 +31,5 @@ func loadConfiguration(user *user.User) (*Config, error) {
 		return nil, errors.New("Could not load authorization token")
 	}
 
-	return &Config{AuthToken: token}, nil
+	return &Config{UserToken: token}, nil
 }

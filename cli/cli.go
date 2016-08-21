@@ -6,6 +6,8 @@ import (
 	"os/user"
 )
 
+import "github.com/cfdrake/todoist-cli/todoist"
+
 // Runs the command line interface with the given argument list.
 func Execute(args []string) {
 	// Fetch the current user's config.
@@ -15,9 +17,16 @@ func Execute(args []string) {
 		os.Exit(1)
 	}
 
-	_, err = loadConfiguration(me)
+	config, err := loadConfiguration(me)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, "ERROR:", err)
 		os.Exit(1)
 	}
+
+	// Dummy test the networking code.
+	c := todoist.Client{UserToken: config.UserToken}
+	resp, err := c.FetchAllData()
+
+	fmt.Println(err)
+	fmt.Println(resp)
 }

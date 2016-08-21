@@ -13,13 +13,11 @@ type Config struct {
   AuthToken string // Personal token used to authenticate with the REST API.
 }
 
-// Path to the configuration file.
-var configFilePath = ".config/todoist-cli/config.ini"
-
 // Loads configuration for the given user.
 func loadConfiguration(user *user.User) (*Config, error) {
   // Generate path to configuration file.
-  path := path.Join(user.HomeDir, ".config/todoist-cli/config.ini")
+  configFilePath := ".config/todoist-cli/config.ini"
+  path := path.Join(user.HomeDir, configFilePath)
 
   // Attempt to load the file into memory.
   file, err := ini.LoadFile(path)

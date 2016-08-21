@@ -9,12 +9,12 @@ import (
 import "github.com/vaughan0/go-ini"
 
 // Configuration file representation.
-type Config struct {
+type config struct {
 	UserToken string // Personal token used to authenticate with the REST API.
 }
 
 // Loads configuration for the given user.
-func loadConfiguration(user *user.User) (*Config, error) {
+func loadConfiguration(user *user.User) (*config, error) {
 	// Generate path to configuration file.
 	configFilePath := ".config/todoist-cli/config.ini"
 	path := path.Join(user.HomeDir, configFilePath)
@@ -31,5 +31,5 @@ func loadConfiguration(user *user.User) (*Config, error) {
 		return nil, errors.New("Could not load authorization token")
 	}
 
-	return &Config{UserToken: token}, nil
+	return &config{UserToken: token}, nil
 }

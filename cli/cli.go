@@ -24,7 +24,7 @@ func Execute(args []string) {
 	}
 
 	// Dummy test the networking code.
-	c := todoist.Client{UserToken: config.UserToken}
+	c := todoist.Client{UserToken: config.userToken}
 	resp, err := c.FetchAllData()
 
 	fmt.Println(err)

@@ -9,9 +9,13 @@ import (
 import "github.com/urfave/cli"
 import "github.com/cfdrake/todoist-cli/todoist"
 
+// Shared app instance.
 var app *cli.App
+
+// Shared API client.
 var client *todoist.Client
 
+// This method is executed upon inclusion of the "cli" package...
 func init() {
 	// Fetch the current user's config and initialize shared client.
 	me, err := user.Current()
@@ -30,6 +34,7 @@ func init() {
 
 	// Setup app interface.
 	app = cli.NewApp()
+
 	app.Usage = "Todoist.com command line client"
 	app.Version = "0.1.0"
 	app.Authors = []cli.Author{
@@ -38,6 +43,7 @@ func init() {
 			Email: "todoist-support@colinfdrake.fastmail.com",
 		},
 	}
+
 	app.Commands = []cli.Command{
 		{
 			Name:    "project",
@@ -76,6 +82,7 @@ func init() {
 	}
 }
 
+// Runs the command line interface given input arguments.
 func Run(args []string) {
 	app.Run(args)
 }

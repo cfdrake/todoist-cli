@@ -2,23 +2,12 @@ package cli
 
 import (
 	"fmt"
-	"strconv"
 )
 
 import "github.com/cfdrake/todoist-cli/todoist"
 import "github.com/ttacon/chalk"
 
-func handleProjectsCommand(client todoist.Client, args []string) {
-	if len(args) == 0 {
-		displayAllProjects(client)
-	} else if id, err := strconv.Atoi(args[0]); err == nil {
-		displayProject(id, client)
-	} else {
-		die("ERROR: No such subcommand...")
-	}
-}
-
-func displayAllProjects(client todoist.Client) {
+func displayAllProjects(client *todoist.Client) {
 	projects, err := client.FetchProjects()
 	if err != nil {
 		die("ERROR: Could not fetch projects...")
@@ -38,7 +27,7 @@ func displayAllProjects(client todoist.Client) {
 	}
 }
 
-func displayProject(id int, client todoist.Client) {
+func displayProject(id int, client *todoist.Client) {
 	resp, err := client.FetchAllData()
 	if err != nil {
 		die("ERROR: Could not fetch projects and/or items...")

@@ -39,10 +39,16 @@ const initialSyncToken string = "*"
 // Builds the resource types string expected by the Sync endpoint.
 func buildResourceTypesString(resourceTypes []ResourceTyper) string {
 	output := "["
+	first := true
 
 	for _, t := range resourceTypes {
+		if !first {
+			output += ","
+		}
+
 		elem := fmt.Sprintf("\"%s\"", t)
 		output += elem
+		first = false
 	}
 
 	output += "]"

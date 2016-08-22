@@ -28,17 +28,17 @@ func displayAllProjects(client *todoist.Client) {
 }
 
 func displayProject(id int, client *todoist.Client) {
-	resp, err := client.FetchAllData()
+	projects, items, err := client.FetchProjectsAndItems()
 	if err != nil {
 		die("ERROR: Could not fetch projects and/or items...")
 	}
 
-	for _, project := range resp.Projects {
+	for _, project := range *projects {
 		if project.Id == id {
 			projectHeader := fmt.Sprintf("Project: %s (%d)", project.Name, project.Id)
 			fmt.Println(chalk.Bold.TextStyle(projectHeader))
 
-			for _, item := range resp.Items {
+			for _, item := range *items {
 				if item.ProjectId == id {
 					fmt.Println("*", item.Content)
 				}

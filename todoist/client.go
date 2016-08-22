@@ -84,6 +84,7 @@ func (c *Client) callSyncService(syncToken string, resourceTypes []ResourceTyper
 		return nil, err
 	}
 
+	model.Denormalize()
 	return model, nil
 }
 
@@ -94,21 +95,21 @@ func (c *Client) FetchAllData() (*SyncResponse, error) {
 }
 
 // Fetches project and item data for the user.
-func (c *Client) FetchProjectsAndItems() (*[]ProjectResponse, *[]ItemResponse, error) {
+func (c *Client) FetchProjectsAndItems() ([]*ProjectResponse, []*ItemResponse, error) {
 	types := []ResourceTyper{projectsResourceType, itemsResourceType}
 	if resp, err := c.callSyncService(initialSyncToken, types); err != nil {
 		return nil, nil, err
 	} else {
-		return &resp.Projects, &resp.Items, nil
+		return resp.Projects, resp.Items, nil
 	}
 }
 
 // Fetches project data for the user.
-func (c *Client) FetchProjects() (*[]ProjectResponse, error) {
+func (c *Client) FetchProjects() ([]*ProjectResponse, error) {
 	types := []ResourceTyper{projectsResourceType}
 	if resp, err := c.callSyncService(initialSyncToken, types); err != nil {
 		return nil, err
 	} else {
-		return &resp.Projects, nil
+		return resp.Projects, nil
 	}
 }

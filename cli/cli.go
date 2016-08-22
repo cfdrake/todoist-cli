@@ -1,6 +1,7 @@
 package cli
 
 import (
+	"fmt"
 	"os"
 	"os/user"
 	"strconv"
@@ -46,6 +47,35 @@ func init() {
 
 	app.Commands = []cli.Command{
 		{
+			Name:    "item",
+			Aliases: []string{"i", "items"},
+			Usage:   "Commands for items",
+			Action: func(c *cli.Context) error {
+				fmt.Println("List all items")
+				return nil
+			},
+			Subcommands: []cli.Command{
+				{
+					Name:    "list",
+					Aliases: []string{"l"},
+					Usage:   "List all items",
+					Action: func(c *cli.Context) error {
+						fmt.Println("List all items")
+						return nil
+					},
+				},
+				{
+					Name:    "show",
+					Aliases: []string{"s"},
+					Usage:   "Show item details",
+					Action: func(c *cli.Context) error {
+						fmt.Println("Show item details")
+						return nil
+					},
+				},
+			},
+		},
+		{
 			Name:    "project",
 			Aliases: []string{"p", "projects"},
 			Usage:   "Commands for projects",
@@ -54,6 +84,15 @@ func init() {
 				return nil
 			},
 			Subcommands: []cli.Command{
+				{
+					Name:    "list",
+					Aliases: []string{"l"},
+					Usage:   "List all projects",
+					Action: func(c *cli.Context) error {
+						displayAllProjects()
+						return nil
+					},
+				},
 				{
 					Name:    "show",
 					Aliases: []string{"s"},
@@ -65,15 +104,6 @@ func init() {
 						} else {
 							displayProject(id)
 						}
-						return nil
-					},
-				},
-				{
-					Name:    "list",
-					Aliases: []string{"l"},
-					Usage:   "List all projects",
-					Action: func(c *cli.Context) error {
-						displayAllProjects()
 						return nil
 					},
 				},

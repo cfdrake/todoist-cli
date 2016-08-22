@@ -7,7 +7,7 @@ import (
 	"github.com/ttacon/chalk"
 )
 
-func fetchProjectsAndItemsOrFail() *todoist.ReadResult {
+func fetchProjectsAndItemsOrFail(client *todoist.Client) *todoist.ReadResult {
 	res, err := client.FetchProjectsAndItems()
 	if err != nil {
 		die("Could not fetch the requested data...")
@@ -15,7 +15,7 @@ func fetchProjectsAndItemsOrFail() *todoist.ReadResult {
 	return res
 }
 
-func displayAllItems() {
+func displayAllItems(client *todoist.Client) {
 	res, err := client.FetchItems()
 	if err != nil {
 		die("Could not fetch items...")
@@ -31,8 +31,8 @@ func displayAllItems() {
 	}
 }
 
-func displayItem(id int) {
-	res := fetchProjectsAndItemsOrFail()
+func displayItem(id int, client *todoist.Client) {
+	res := fetchProjectsAndItemsOrFail(client)
 	item := res.ItemWithId(id)
 	itemHeader := fmt.Sprintf("Item: %s", item)
 	fmt.Println(chalk.Bold.TextStyle(itemHeader))
@@ -40,7 +40,7 @@ func displayItem(id int) {
 	fmt.Println(item.Project)
 }
 
-func displayAllProjects() {
+func displayAllProjects(client *todoist.Client) {
 	res, err := client.FetchProjects()
 	if err != nil {
 		die("Could not fetch projects...")
@@ -56,8 +56,8 @@ func displayAllProjects() {
 	}
 }
 
-func displayProject(id int) {
-	res := fetchProjectsAndItemsOrFail()
+func displayProject(id int, client *todoist.Client) {
+	res := fetchProjectsAndItemsOrFail(client)
 	project := res.ProjectWithId(id)
 	projectHeader := fmt.Sprintf("Project: %s", project)
 	fmt.Println(chalk.Bold.TextStyle(projectHeader))

@@ -2,21 +2,13 @@ package cli
 
 import (
 	"fmt"
-	"os/user"
 	"strconv"
 
 	"github.com/cfdrake/todoist-cli/todoist"
 	"github.com/urfave/cli"
 )
 
-var (
-	// Shared app instance.
-	app *cli.App
-
-	// Shared API client.
-	client *todoist.Client
-)
-
+// Parses an integer ID from a string, or fails.
 func parseId(idString string) int {
 	id, err := strconv.Atoi(idString)
 	if err != nil {
@@ -25,8 +17,17 @@ func parseId(idString string) int {
 	return id
 }
 
-func init() {
-	app = cli.NewApp()
+// Command line application.
+type CliApplication struct {
+	app    *cli.App
+	client *todoist.Client
+}
+
+// Creates a new application with the given configuration.
+func NewApp(config Configurer) *CliApplication {
+	// Setup client and app instances.
+	client := &todoist.Client{UserToken: config.UserToken()}
+	app := cli.NewApp()
 
 	app.Usage = "Todoist.com command line client"
 	app.Version = "0.1.0"
@@ -37,13 +38,14 @@ func init() {
 		},
 	}
 
+	// Configure possible subcommands.
 	app.Commands = []cli.Command{
 		{
 			Name:    "item",
 			Aliases: []string{"i", "items"},
 			Usage:   "Commands for items",
 			Action: func(c *cli.Context) error {
-				displayAllItems()
+				displayAllItems(client)
 				return nil
 			},
 			Subcommands: []cli.Command{
@@ -52,7 +54,7 @@ func init() {
 					Aliases: []string{"l"},
 					Usage:   "List all items",
 					Action: func(c *cli.Context) error {
-						displayAllItems()
+						displayAllItems(client)
 						return nil
 					},
 				},
@@ -62,7 +64,7 @@ func init() {
 					Usage:   "Show item details",
 					Action: func(c *cli.Context) error {
 						id := parseId(c.Args().First())
-						displayItem(id)
+						displayItem(id, client)
 						return nil
 					},
 				},
@@ -82,7 +84,7 @@ func init() {
 			Aliases: []string{"p", "projects"},
 			Usage:   "Commands for projects",
 			Action: func(c *cli.Context) error {
-				displayAllProjects()
+				displayAllProjects(client)
 				return nil
 			},
 			Subcommands: []cli.Command{
@@ -91,7 +93,7 @@ func init() {
 					Aliases: []string{"l"},
 					Usage:   "List all projects",
 					Action: func(c *cli.Context) error {
-						displayAllProjects()
+						displayAllProjects(client)
 						return nil
 					},
 				},
@@ -101,28 +103,18 @@ func init() {
 					Usage:   "Show project details",
 					Action: func(c *cli.Context) error {
 						id := parseId(c.Args().First())
-						displayProject(id)
+						displayProject(id, client)
 						return nil
 					},
 				},
 			},
 		},
 	}
+
+	return &CliApplication{app: app, client: client}
 }
 
-// Runs the command line interface given input arguments.
-func Run(args []string) {
-	me, err := user.Current()
-	if err != nil {
-		die("Could not find current user!")
-	}
-
-	config, err := loadConfiguration(me)
-	if err != nil {
-		die(err)
-	}
-
-	client = &todoist.Client{UserToken: config.userToken}
-
-	app.Run(args)
+// Runs the application with the given arguments.
+func (c *CliApplication) Run(args []string) {
+	c.app.Run(args)
 }

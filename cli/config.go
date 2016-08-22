@@ -1,53 +1,64 @@
 package cli
 
 import (
-	"errors"
-	"fmt"
+	"os"
 	"os/user"
 	"path"
 
 	"github.com/vaughan0/go-ini"
 )
 
-// Configuration file representation.
-type config struct {
-	userToken string // Personal token used to authenticate with the REST API.
+// Interface for a config provider.
+type Configurer interface {
+	UserToken() string
 }
 
-// Populate a config instance from an INI.
-func (c *config) PopulateFromIni(file ini.File) {
-	token, ok := file.Get("auth", "token")
-	if ok {
-		c.userToken = token
+// Environment variable based config provider.
+type EnvironmentConfig struct{}
+
+func NewEnvironmentConfig() EnvironmentConfig {
+	return EnvironmentConfig{}
+}
+
+func (e EnvironmentConfig) UserToken() string {
+	token := os.Getenv("TODOIST_API_TOKEN")
+	if token == "" {
+		die("Expected to find API token in TODOIST_API_TOKEN variable")
 	}
+	return token
 }
 
-// Loads configuration for the given user.
-func loadConfiguration(user *user.User) (*config, error) {
-	// Generate path to configuration file.
+// Config file based config provider.
+type FileConfig struct {
+	backingFile ini.File
+}
+
+func NewFileConfig() FileConfig {
+	user, err := user.Current()
+	if err != nil {
+		die("Unable to retrieve current user...")
+	}
+
 	configFilePath := ".config/todoist-cli/config.ini"
 	path := path.Join(user.HomeDir, configFilePath)
 
-	// Load config from file.
 	file, err := ini.LoadFile(path)
 	if err != nil {
-		msg := fmt.Sprintf("Expected to find config file at '%s'", path)
-		return nil, errors.New(msg)
+		die("Expected to find config file at '" + path + "'")
 	}
 
-	c := new(config)
-	c.PopulateFromIni(file)
+	return FileConfig{backingFile: file}
+}
 
-	// Check for missing data.
-	if c.userToken == "" {
-		msg := `Missing token under [auth] section in config!
+func (f FileConfig) UserToken() string {
+	token, ok := f.backingFile.Get("auth", "token")
+	if !ok {
+		die(`Missing token under [auth] section in config!
 
 Ensure your configuration file looks like the following:
 
     [auth]
-    token = <your token here>`
-		return nil, errors.New(msg)
+    token = <your token here>`)
 	}
-
-	return c, nil
+	return token
 }

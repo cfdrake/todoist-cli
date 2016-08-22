@@ -7,5 +7,7 @@ import (
 )
 
 func main() {
-	cli.Run(os.Args)
+	config := cli.NewFileConfig()
+	c := cli.NewApp(config)
+	c.Run(os.Args)
 }

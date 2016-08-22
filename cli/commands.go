@@ -2,10 +2,16 @@ package cli
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/cfdrake/todoist-cli/todoist"
 	"github.com/ttacon/chalk"
 )
+
+func indent(indentLevel int) {
+	whitespace := strings.Repeat(" ", indentLevel-1)
+	fmt.Print(whitespace)
+}
 
 func fetchProjectsAndItemsOrFail(client *todoist.Client) *todoist.ReadResult {
 	res, err := client.FetchProjectsAndItems()
@@ -22,10 +28,10 @@ func displayAllItems(client *todoist.Client) {
 	}
 
 	fmt.Println(chalk.Bold.TextStyle("All Items"))
-	fmt.Println()
 
 	for _, item := range res.Items {
 		if item.ShouldDisplay() {
+			indent(item.Indent)
 			fmt.Println("*", item)
 		}
 	}
@@ -36,7 +42,7 @@ func displayItem(id int, client *todoist.Client) {
 	item := res.ItemWithId(id)
 	itemHeader := fmt.Sprintf("Item: %s", item)
 	fmt.Println(chalk.Bold.TextStyle(itemHeader))
-	fmt.Print("* Associated Project:")
+	fmt.Print("* Project:")
 	fmt.Println(item.Project)
 }
 
@@ -47,10 +53,10 @@ func displayAllProjects(client *todoist.Client) {
 	}
 
 	fmt.Println(chalk.Bold.TextStyle("All Projects"))
-	fmt.Println()
 
 	for _, project := range res.Projects {
 		if project.ShouldDisplay() {
+			indent(project.Indent)
 			fmt.Println("*", project)
 		}
 	}

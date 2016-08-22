@@ -100,6 +100,12 @@ func (c *Client) FetchProjectsAndItems() (*ReadResult, error) {
 	return c.performReadRequest(initialSyncToken, types)
 }
 
+// Fetches item data for the user.
+func (c *Client) FetchItems() (*ReadResult, error) {
+	types := []ResourceTyper{itemsResourceType}
+	return c.performReadRequest(initialSyncToken, types)
+}
+
 // Fetches project data for the user.
 func (c *Client) FetchProjects() (*ReadResult, error) {
 	types := []ResourceTyper{projectsResourceType}

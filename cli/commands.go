@@ -6,6 +6,22 @@ import (
 	"github.com/ttacon/chalk"
 )
 
+func displayAllItems() {
+	res, err := client.FetchItems()
+	if err != nil {
+		die("Could not fetch items...")
+	}
+
+	fmt.Println(chalk.Bold.TextStyle("All Items"))
+	fmt.Println()
+
+	for _, item := range res.Items {
+		if item.ShouldDisplay() {
+			fmt.Println("*", item)
+		}
+	}
+}
+
 func displayAllProjects() {
 	res, err := client.FetchProjects()
 	if err != nil {

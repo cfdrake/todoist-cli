@@ -61,7 +61,7 @@ type Item struct {
 
 // Adhere to Stringer interface.
 func (i Item) String() string {
-	return i.Content
+	return fmt.Sprintf("%s (%d)", i.Content, i.Id)
 }
 
 // Predicate indicating whether or not the item should be shown.

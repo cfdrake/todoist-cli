@@ -35,7 +35,7 @@ func init() {
 			Aliases: []string{"i", "items"},
 			Usage:   "Commands for items",
 			Action: func(c *cli.Context) error {
-				fmt.Println("List all items")
+				displayAllItems()
 				return nil
 			},
 			Subcommands: []cli.Command{
@@ -44,7 +44,7 @@ func init() {
 					Aliases: []string{"l"},
 					Usage:   "List all items",
 					Action: func(c *cli.Context) error {
-						fmt.Println("List all items")
+						displayAllItems()
 						return nil
 					},
 				},

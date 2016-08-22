@@ -65,8 +65,8 @@ func generateBaseParams(userToken string, syncToken string, resourceTypes []Reso
 	}
 }
 
-// Calls the Sync service with the given inputs and returns the body decoded into a ReadResult type.
-func (c *Client) callSyncService(syncToken string, resourceTypes []ResourceTyper) (res *ReadResult, err error) {
+// Performs a read request and returns the result from the Sync service.
+func (c *Client) performReadRequest(syncToken string, resourceTypes []ResourceTyper) (res *ReadResult, err error) {
 	params := generateBaseParams(c.UserToken, syncToken, resourceTypes)
 	resp, err := http.PostForm(endpointUrl, params)
 	if err != nil {
@@ -91,17 +91,17 @@ func (c *Client) callSyncService(syncToken string, resourceTypes []ResourceTyper
 // Fetches all data for the given user.
 func (c *Client) FetchAllData() (*ReadResult, error) {
 	types := []ResourceTyper{allDataResourceType}
-	return c.callSyncService(initialSyncToken, types)
+	return c.performReadRequest(initialSyncToken, types)
 }
 
 // Fetches project and item data for the user.
 func (c *Client) FetchProjectsAndItems() (*ReadResult, error) {
 	types := []ResourceTyper{projectsResourceType, itemsResourceType}
-	return c.callSyncService(initialSyncToken, types)
+	return c.performReadRequest(initialSyncToken, types)
 }
 
 // Fetches project data for the user.
 func (c *Client) FetchProjects() (*ReadResult, error) {
 	types := []ResourceTyper{projectsResourceType}
-	return c.callSyncService(initialSyncToken, types)
+	return c.performReadRequest(initialSyncToken, types)
 }

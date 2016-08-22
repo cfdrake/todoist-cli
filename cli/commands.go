@@ -4,7 +4,6 @@ import (
 	"fmt"
 )
 
-//import "github.com/cfdrake/todoist-cli/todoist"
 import "github.com/ttacon/chalk"
 
 func displayAllProjects() {

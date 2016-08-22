@@ -65,12 +65,18 @@ func (i ItemResponse) String() string {
 
 // Represents a Project.
 type ProjectResponse struct {
-	Id     int
-	Name   string
-	Indent int
-	Items  []*ItemResponse
+	Id       int
+	Name     string
+	Indent   int
+	Items    []*ItemResponse
+	Archived int `json:"is_archived"`
+	Deleted  int `json:"is_deleted"`
 }
 
 func (p ProjectResponse) String() string {
 	return fmt.Sprintf("%s (%d)", p.Name, p.Id)
+}
+
+func (p ProjectResponse) ShouldDisplay() bool {
+	return p.Archived == 0 && p.Deleted == 0
 }

@@ -16,7 +16,9 @@ func displayAllProjects() {
 	fmt.Println()
 
 	for _, project := range projects {
-		fmt.Println("*", project)
+		if project.ShouldDisplay() {
+			fmt.Println("*", project)
+		}
 	}
 }
 

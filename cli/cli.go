@@ -17,6 +17,14 @@ var (
 	client *todoist.Client
 )
 
+func parseId(idString string) int {
+	id, err := strconv.Atoi(idString)
+	if err != nil {
+		die("Could not parse '" + idString + "' as an ID")
+	}
+	return id
+}
+
 func init() {
 	app = cli.NewApp()
 
@@ -53,12 +61,8 @@ func init() {
 					Aliases: []string{"s"},
 					Usage:   "Show item details",
 					Action: func(c *cli.Context) error {
-						idStr := c.Args().First()
-						if id, err := strconv.Atoi(idStr); err != nil {
-							die("Could not parse item ID...")
-						} else {
-							displayItem(id)
-						}
+						id := parseId(c.Args().First())
+						displayItem(id)
 						return nil
 					},
 				},
@@ -96,12 +100,8 @@ func init() {
 					Aliases: []string{"s"},
 					Usage:   "Show project details",
 					Action: func(c *cli.Context) error {
-						idStr := c.Args().First()
-						if id, err := strconv.Atoi(idStr); err != nil {
-							die("Could not parse project ID...")
-						} else {
-							displayProject(id)
-						}
+						id := parseId(c.Args().First())
+						displayProject(id)
 						return nil
 					},
 				},

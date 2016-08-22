@@ -53,7 +53,12 @@ func init() {
 					Aliases: []string{"s"},
 					Usage:   "Show item details",
 					Action: func(c *cli.Context) error {
-						fmt.Println("Show item details")
+						idStr := c.Args().First()
+						if id, err := strconv.Atoi(idStr); err != nil {
+							die("Could not parse item ID...")
+						} else {
+							displayItem(id)
+						}
 						return nil
 					},
 				},

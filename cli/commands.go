@@ -22,6 +22,19 @@ func displayAllItems() {
 	}
 }
 
+func displayItem(id int) {
+	res, err := client.FetchProjectsAndItems()
+	if err != nil {
+		die("Could not fetch items...")
+	}
+
+	item := res.ItemWithId(id)
+	itemHeader := fmt.Sprintf("Item: %s", item)
+	fmt.Println(chalk.Bold.TextStyle(itemHeader))
+	fmt.Print("* Associated Project:")
+	fmt.Println(item.Project)
+}
+
 func displayAllProjects() {
 	res, err := client.FetchProjects()
 	if err != nil {

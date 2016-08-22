@@ -10,6 +10,17 @@ type ReadResult struct {
 	Projects []*Project
 }
 
+// Returns the item with the given id, if any.
+func (r *ReadResult) ItemWithId(id int) *Item {
+	for _, item := range r.Items {
+		if item.Id == id {
+			return item
+		}
+	}
+
+	return nil
+}
+
 // Returns the project with the given id, if any.
 func (r *ReadResult) ProjectWithId(id int) *Project {
 	for _, project := range r.Projects {

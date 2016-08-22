@@ -2,7 +2,6 @@ package cli
 
 import (
 	"fmt"
-	"os"
 	"os/user"
 	"strconv"
 
@@ -22,13 +21,11 @@ func init() {
 	me, err := user.Current()
 	if err != nil {
 		die("Could not find current user!")
-		os.Exit(1)
 	}
 
 	config, err := loadConfiguration(me)
 	if err != nil {
 		die(err)
-		os.Exit(1)
 	}
 
 	client = &todoist.Client{UserToken: config.userToken}

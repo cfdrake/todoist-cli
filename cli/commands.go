@@ -28,18 +28,13 @@ func displayProject(id int) {
 		die("Could not fetch projects and/or items...")
 	}
 
-	for _, project := range res.Projects {
-		if project.Id == id {
-			projectHeader := fmt.Sprintf("Project: %s", project)
-			fmt.Println(chalk.Bold.TextStyle(projectHeader))
+	project := res.ProjectWithId(id)
+	projectHeader := fmt.Sprintf("Project: %s", project)
+	fmt.Println(chalk.Bold.TextStyle(projectHeader))
 
-			for _, item := range project.Items {
-				if item.ShouldDisplay() {
-					fmt.Println("*", item)
-				}
-			}
-
-			break
+	for _, item := range project.Items {
+		if item.ShouldDisplay() {
+			fmt.Println("*", item)
 		}
 	}
 }

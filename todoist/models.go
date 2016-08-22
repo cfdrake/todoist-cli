@@ -4,6 +4,24 @@ import (
 	"fmt"
 )
 
+// A write command representation.
+type WriteCommand struct {
+	Type   string
+	Args   map[string]string
+	Uuid   string
+	TempId string `json:"temp_id"`
+}
+
+// A request to perform an array of WriteCommands.
+type WriteRequest struct {
+	Commands []WriteCommand
+}
+
+// A write result.
+type WriteResult struct {
+	// TODO: ...
+}
+
 // Represents a read response from the Sync API.
 type ReadResult struct {
 	Items    []*Item

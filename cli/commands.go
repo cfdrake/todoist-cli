@@ -16,13 +16,7 @@ func displayAllProjects() {
 	fmt.Println()
 
 	for _, project := range *projects {
-		id := fmt.Sprintf("(%d)", project.Id)
-		fmt.Println(
-			"*",
-			chalk.Underline.TextStyle(project.Name),
-			chalk.White.Color(id),
-			chalk.Reset,
-		)
+		fmt.Println("*", project)
 	}
 }
 
@@ -34,12 +28,12 @@ func displayProject(id int) {
 
 	for _, project := range *projects {
 		if project.Id == id {
-			projectHeader := fmt.Sprintf("Project: %s (%d)", project.Name, project.Id)
+			projectHeader := fmt.Sprintf("Project: %s", project)
 			fmt.Println(chalk.Bold.TextStyle(projectHeader))
 
 			for _, item := range *items {
 				if item.ProjectId == id {
-					fmt.Println("*", item.Content)
+					fmt.Println("*", item)
 				}
 			}
 

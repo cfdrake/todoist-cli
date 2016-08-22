@@ -97,19 +97,11 @@ func (c *Client) FetchAllData() (*ReadResult, error) {
 // Fetches project and item data for the user.
 func (c *Client) FetchProjectsAndItems() (*ReadResult, error) {
 	types := []ResourceTyper{projectsResourceType, itemsResourceType}
-	if res, err := c.callSyncService(initialSyncToken, types); err != nil {
-		return nil, err
-	} else {
-		return res, nil
-	}
+	return c.callSyncService(initialSyncToken, types)
 }
 
 // Fetches project data for the user.
 func (c *Client) FetchProjects() (*ReadResult, error) {
 	types := []ResourceTyper{projectsResourceType}
-	if res, err := c.callSyncService(initialSyncToken, types); err != nil {
-		return nil, err
-	} else {
-		return res, nil
-	}
+	return c.callSyncService(initialSyncToken, types)
 }

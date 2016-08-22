@@ -5,13 +5,13 @@ import (
 )
 
 // Represents a read response from the Sync API.
-type ReadResponse struct {
-	Items    []*ItemResponse
-	Projects []*ProjectResponse
+type ReadResult struct {
+	Items    []*Item
+	Projects []*Project
 }
 
 // Returns the project with the given id, if any.
-func (r *ReadResponse) ProjectWithId(id int) *ProjectResponse {
+func (r *ReadResult) ProjectWithId(id int) *Project {
 	for _, project := range r.Projects {
 		if project.Id == id {
 			return project
@@ -22,8 +22,8 @@ func (r *ReadResponse) ProjectWithId(id int) *ProjectResponse {
 }
 
 // Returns the items associated with the given project.
-func (r *ReadResponse) ItemsForProject(id int) []*ItemResponse {
-	items := []*ItemResponse{}
+func (r *ReadResult) ItemsForProject(id int) []*Item {
+	items := []*Item{}
 
 	for _, item := range r.Items {
 		if item.ProjectId == id {
@@ -35,10 +35,8 @@ func (r *ReadResponse) ItemsForProject(id int) []*ItemResponse {
 }
 
 // Denormalizes the dataset.
-//
-// Adds pointers to projects for each item and an array of pointers to
-// items for each project.
-func (r *ReadResponse) Denormalize() {
+// Adds pointers to projects for each item and an array of pointers to items for each project.
+func (r *ReadResult) Denormalize() {
 	// Associate items with their project.
 	for _, item := range r.Items {
 		item.Project = r.ProjectWithId(item.ProjectId)
@@ -51,38 +49,42 @@ func (r *ReadResponse) Denormalize() {
 }
 
 // Represents an Item.
-type ItemResponse struct {
+type Item struct {
 	Id        int
 	Content   string
 	Indent    int
 	Archived  int `json:"is_archived"`
 	Deleted   int `json:"is_deleted"`
 	ProjectId int `json:"project_id"`
-	Project   *ProjectResponse
+	Project   *Project
 }
 
-func (i ItemResponse) String() string {
+// Adhere to Stringer interface.
+func (i Item) String() string {
 	return i.Content
 }
 
-func (i ItemResponse) ShouldDisplay() bool {
+// Predicate indicating whether or not the item should be shown.
+func (i Item) ShouldDisplay() bool {
 	return i.Archived == 0 && i.Deleted == 0
 }
 
 // Represents a Project.
-type ProjectResponse struct {
+type Project struct {
 	Id       int
 	Name     string
 	Indent   int
-	Items    []*ItemResponse
+	Items    []*Item
 	Archived int `json:"is_archived"`
 	Deleted  int `json:"is_deleted"`
 }
 
-func (p ProjectResponse) String() string {
+// Adhere to Stringer interface.
+func (p Project) String() string {
 	return fmt.Sprintf("%s (%d)", p.Name, p.Id)
 }
 
-func (p ProjectResponse) ShouldDisplay() bool {
+// Predicate indicating whether or not the project should be shown.
+func (p Project) ShouldDisplay() bool {
 	return p.Archived == 0 && p.Deleted == 0
 }

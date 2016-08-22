@@ -65,8 +65,8 @@ func generateBaseParams(userToken string, syncToken string, resourceTypes []Reso
 	}
 }
 
-// Calls the Sync service with the given inputs and returns the body decoded into a ReadResponse type.
-func (c *Client) callSyncService(syncToken string, resourceTypes []ResourceTyper) (*ReadResponse, error) {
+// Calls the Sync service with the given inputs and returns the body decoded into a ReadResult type.
+func (c *Client) callSyncService(syncToken string, resourceTypes []ResourceTyper) (*ReadResult, error) {
 	params := generateBaseParams(c.UserToken, syncToken, resourceTypes)
 	resp, err := http.PostForm(endpointUrl, params)
 	if err != nil {
@@ -79,7 +79,7 @@ func (c *Client) callSyncService(syncToken string, resourceTypes []ResourceTyper
 		return nil, err
 	}
 
-	model := &ReadResponse{}
+	model := &ReadResult{}
 	if err = json.Unmarshal(responseBytes, model); err != nil {
 		return nil, err
 	}
@@ -89,13 +89,13 @@ func (c *Client) callSyncService(syncToken string, resourceTypes []ResourceTyper
 }
 
 // Fetches all data for the given user.
-func (c *Client) FetchAllData() (*ReadResponse, error) {
+func (c *Client) FetchAllData() (*ReadResult, error) {
 	types := []ResourceTyper{allDataResourceType}
 	return c.callSyncService(initialSyncToken, types)
 }
 
 // Fetches project and item data for the user.
-func (c *Client) FetchProjectsAndItems() ([]*ProjectResponse, []*ItemResponse, error) {
+func (c *Client) FetchProjectsAndItems() ([]*Project, []*Item, error) {
 	types := []ResourceTyper{projectsResourceType, itemsResourceType}
 	if resp, err := c.callSyncService(initialSyncToken, types); err != nil {
 		return nil, nil, err
@@ -105,7 +105,7 @@ func (c *Client) FetchProjectsAndItems() ([]*ProjectResponse, []*ItemResponse, e
 }
 
 // Fetches project data for the user.
-func (c *Client) FetchProjects() ([]*ProjectResponse, error) {
+func (c *Client) FetchProjects() ([]*Project, error) {
 	types := []ResourceTyper{projectsResourceType}
 	if resp, err := c.callSyncService(initialSyncToken, types); err != nil {
 		return nil, err

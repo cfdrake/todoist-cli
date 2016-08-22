@@ -7,7 +7,7 @@ import (
 )
 
 func displayAllProjects() {
-	projects, err := client.FetchProjects()
+	res, err := client.FetchProjects()
 	if err != nil {
 		die("Could not fetch projects...")
 	}
@@ -15,7 +15,7 @@ func displayAllProjects() {
 	fmt.Println(chalk.Bold.TextStyle("All Projects"))
 	fmt.Println()
 
-	for _, project := range projects {
+	for _, project := range res.Projects {
 		if project.ShouldDisplay() {
 			fmt.Println("*", project)
 		}
@@ -23,12 +23,12 @@ func displayAllProjects() {
 }
 
 func displayProject(id int) {
-	projects, _, err := client.FetchProjectsAndItems()
+	res, err := client.FetchProjectsAndItems()
 	if err != nil {
 		die("Could not fetch projects and/or items...")
 	}
 
-	for _, project := range projects {
+	for _, project := range res.Projects {
 		if project.Id == id {
 			projectHeader := fmt.Sprintf("Project: %s", project)
 			fmt.Println(chalk.Bold.TextStyle(projectHeader))

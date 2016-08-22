@@ -95,21 +95,21 @@ func (c *Client) FetchAllData() (*ReadResult, error) {
 }
 
 // Fetches project and item data for the user.
-func (c *Client) FetchProjectsAndItems() ([]*Project, []*Item, error) {
+func (c *Client) FetchProjectsAndItems() (*ReadResult, error) {
 	types := []ResourceTyper{projectsResourceType, itemsResourceType}
-	if resp, err := c.callSyncService(initialSyncToken, types); err != nil {
-		return nil, nil, err
+	if res, err := c.callSyncService(initialSyncToken, types); err != nil {
+		return nil, err
 	} else {
-		return resp.Projects, resp.Items, nil
+		return res, nil
 	}
 }
 
 // Fetches project data for the user.
-func (c *Client) FetchProjects() ([]*Project, error) {
+func (c *Client) FetchProjects() (*ReadResult, error) {
 	types := []ResourceTyper{projectsResourceType}
-	if resp, err := c.callSyncService(initialSyncToken, types); err != nil {
+	if res, err := c.callSyncService(initialSyncToken, types); err != nil {
 		return nil, err
 	} else {
-		return resp.Projects, nil
+		return res, nil
 	}
 }

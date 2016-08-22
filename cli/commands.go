@@ -9,7 +9,7 @@ import (
 func displayAllProjects() {
 	projects, err := client.FetchProjects()
 	if err != nil {
-		die("ERROR: Could not fetch projects...")
+		die("Could not fetch projects...")
 	}
 
 	fmt.Println(chalk.Bold.TextStyle("All Projects"))
@@ -23,7 +23,7 @@ func displayAllProjects() {
 func displayProject(id int) {
 	projects, _, err := client.FetchProjectsAndItems()
 	if err != nil {
-		die("ERROR: Could not fetch projects and/or items...")
+		die("Could not fetch projects and/or items...")
 	}
 
 	for _, project := range projects {

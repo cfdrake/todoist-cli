@@ -21,13 +21,13 @@ func init() {
 	// Fetch the current user's config and initialize shared client.
 	me, err := user.Current()
 	if err != nil {
-		die("ERROR: Could not find current user!")
+		die("Could not find current user!")
 		os.Exit(1)
 	}
 
 	config, err := loadConfiguration(me)
 	if err != nil {
-		die("ERROR:", err)
+		die(err)
 		os.Exit(1)
 	}
 
@@ -100,7 +100,7 @@ func init() {
 					Action: func(c *cli.Context) error {
 						idStr := c.Args().First()
 						if id, err := strconv.Atoi(idStr); err != nil {
-							die("ERROR: Could not parse project ID...")
+							die("Could not parse project ID...")
 						} else {
 							displayProject(id)
 						}

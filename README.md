@@ -44,3 +44,7 @@ todoist-cli items                (alias for list)
 todoist-cli items list
 todoist-cli items show <id>
 ```
+
+## License
+
+See the `LICENSE.md` file for details.

@@ -9,28 +9,15 @@ import (
 	"github.com/urfave/cli"
 )
 
-// Shared app instance.
-var app *cli.App
+var (
+	// Shared app instance.
+	app *cli.App
 
-// Shared API client.
-var client *todoist.Client
+	// Shared API client.
+	client *todoist.Client
+)
 
-// This method is executed upon inclusion of the "cli" package...
 func init() {
-	// Fetch the current user's config and initialize shared client.
-	me, err := user.Current()
-	if err != nil {
-		die("Could not find current user!")
-	}
-
-	config, err := loadConfiguration(me)
-	if err != nil {
-		die(err)
-	}
-
-	client = &todoist.Client{UserToken: config.userToken}
-
-	// Setup app interface.
 	app = cli.NewApp()
 
 	app.Usage = "Todoist.com command line client"
@@ -111,5 +98,17 @@ func init() {
 
 // Runs the command line interface given input arguments.
 func Run(args []string) {
+	me, err := user.Current()
+	if err != nil {
+		die("Could not find current user!")
+	}
+
+	config, err := loadConfiguration(me)
+	if err != nil {
+		die(err)
+	}
+
+	client = &todoist.Client{UserToken: config.userToken}
+
 	app.Run(args)
 }

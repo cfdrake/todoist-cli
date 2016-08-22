@@ -57,6 +57,15 @@ func init() {
 						return nil
 					},
 				},
+				{
+					Name:    "toggle",
+					Aliases: []string{"t"},
+					Usage:   "Toggle item checked status",
+					Action: func(c *cli.Context) error {
+						fmt.Println("Toggle item checked status")
+						return nil
+					},
+				},
 			},
 		},
 		{

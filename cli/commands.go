@@ -7,7 +7,7 @@ import (
 	"github.com/ttacon/chalk"
 )
 
-func fetchProjectsAndItemOrFail() *todoist.ReadResult {
+func fetchProjectsAndItemsOrFail() *todoist.ReadResult {
 	res, err := client.FetchProjectsAndItems()
 	if err != nil {
 		die("Could not fetch the requested data...")
@@ -32,7 +32,7 @@ func displayAllItems() {
 }
 
 func displayItem(id int) {
-	res := fetchProjectsAndItemOrFail()
+	res := fetchProjectsAndItemsOrFail()
 	item := res.ItemWithId(id)
 	itemHeader := fmt.Sprintf("Item: %s", item)
 	fmt.Println(chalk.Bold.TextStyle(itemHeader))
@@ -57,7 +57,7 @@ func displayAllProjects() {
 }
 
 func displayProject(id int) {
-	res := fetchProjectsAndItemOrFail()
+	res := fetchProjectsAndItemsOrFail()
 	project := res.ProjectWithId(id)
 	projectHeader := fmt.Sprintf("Project: %s", project)
 	fmt.Println(chalk.Bold.TextStyle(projectHeader))

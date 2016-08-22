@@ -66,26 +66,26 @@ func generateBaseParams(userToken string, syncToken string, resourceTypes []Reso
 }
 
 // Calls the Sync service with the given inputs and returns the body decoded into a ReadResult type.
-func (c *Client) callSyncService(syncToken string, resourceTypes []ResourceTyper) (*ReadResult, error) {
+func (c *Client) callSyncService(syncToken string, resourceTypes []ResourceTyper) (res *ReadResult, err error) {
 	params := generateBaseParams(c.UserToken, syncToken, resourceTypes)
 	resp, err := http.PostForm(endpointUrl, params)
 	if err != nil {
-		return nil, err
+		return
 	}
 
 	defer resp.Body.Close()
 	responseBytes, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		return nil, err
+		return
 	}
 
-	model := &ReadResult{}
-	if err = json.Unmarshal(responseBytes, model); err != nil {
-		return nil, err
+	res = &ReadResult{}
+	if err = json.Unmarshal(responseBytes, res); err != nil {
+		return
 	}
+	res.Denormalize()
 
-	model.Denormalize()
-	return model, nil
+	return
 }
 
 // Fetches all data for the given user.

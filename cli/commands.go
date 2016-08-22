@@ -4,10 +4,10 @@ import (
 	"fmt"
 )
 
-import "github.com/cfdrake/todoist-cli/todoist"
+//import "github.com/cfdrake/todoist-cli/todoist"
 import "github.com/ttacon/chalk"
 
-func displayAllProjects(client *todoist.Client) {
+func displayAllProjects() {
 	projects, err := client.FetchProjects()
 	if err != nil {
 		die("ERROR: Could not fetch projects...")
@@ -27,7 +27,7 @@ func displayAllProjects(client *todoist.Client) {
 	}
 }
 
-func displayProject(id int, client *todoist.Client) {
+func displayProject(id int) {
 	projects, items, err := client.FetchProjectsAndItems()
 	if err != nil {
 		die("ERROR: Could not fetch projects and/or items...")

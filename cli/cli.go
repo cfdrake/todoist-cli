@@ -50,7 +50,7 @@ func init() {
 			Aliases: []string{"p", "projects"},
 			Usage:   "Commands for projects",
 			Action: func(c *cli.Context) error {
-				displayAllProjects(client)
+				displayAllProjects()
 				return nil
 			},
 			Subcommands: []cli.Command{
@@ -63,7 +63,7 @@ func init() {
 						if id, err := strconv.Atoi(idStr); err != nil {
 							die("ERROR: Could not parse project ID...")
 						} else {
-							displayProject(id, client)
+							displayProject(id)
 						}
 						return nil
 					},
@@ -73,7 +73,7 @@ func init() {
 					Aliases: []string{"l"},
 					Usage:   "List all projects",
 					Action: func(c *cli.Context) error {
-						displayAllProjects(client)
+						displayAllProjects()
 						return nil
 					},
 				},

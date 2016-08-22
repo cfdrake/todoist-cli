@@ -18,13 +18,13 @@ func parseId(idString string) int {
 }
 
 // Command line application.
-type CliApplication struct {
+type Application struct {
 	app    *cli.App
 	client *todoist.Client
 }
 
 // Creates a new application with the given configuration.
-func NewApp(config Configurer) *CliApplication {
+func NewApp(config Configurer) *Application {
 	// Setup client and app instances.
 	client := &todoist.Client{UserToken: config.UserToken()}
 	app := cli.NewApp()
@@ -111,10 +111,10 @@ func NewApp(config Configurer) *CliApplication {
 		},
 	}
 
-	return &CliApplication{app: app, client: client}
+	return &Application{app: app, client: client}
 }
 
 // Runs the application with the given arguments.
-func (c *CliApplication) Run(args []string) {
+func (c *Application) Run(args []string) {
 	c.app.Run(args)
 }

@@ -55,7 +55,7 @@ func (r *ReadResult) denormalize() {
 
 	// Associate projects with their items.
 	for _, project := range r.Projects {
-		project.Items = r.ItemsForProject(project.Id)
+		project.Items = r.itemsForProject(project.Id)
 	}
 }
 

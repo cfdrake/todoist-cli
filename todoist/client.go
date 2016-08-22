@@ -83,7 +83,7 @@ func (c *Client) performReadRequest(syncToken string, resourceTypes []ResourceTy
 	if err = json.Unmarshal(responseBytes, res); err != nil {
 		return
 	}
-	res.Denormalize()
+	res.denormalize()
 
 	return
 }

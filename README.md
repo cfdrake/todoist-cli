@@ -26,6 +26,8 @@ Later, I'd like to distribute this using Homebrew.
 token = <paste your token here>
 ```
 
+Feel free to `chmod 0600 ~/.config/todoist-cli/config.ini` so only your user can read it.
+
 ## Usage
 
 Run the `todoist-cli` command without any parameters to receive help.

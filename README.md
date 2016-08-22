@@ -1,6 +1,6 @@
 # todoist-cli [![Build Status](https://travis-ci.org/cfdrake/todoist-cli.svg?branch=master)](https://travis-ci.org/cfdrake/todoist-cli)
 
-A simple commandline interface for managing [Todoist](http://todoist.com) projects and items.
+A simple command line interface for managing [Todoist](http://todoist.com) projects and items.
 
 ## Installation
 
@@ -33,3 +33,14 @@ Feel free to `chmod 0600 ~/.config/todoist-cli/config.ini` so only your user can
 Run the `todoist-cli` command without any parameters to receive help.
 
 To get help for a subcommand, try the following, for example: `todoist-cli projects help`.
+
+The following is a list of currently supported commands:
+
+```
+todoist-cli projects             (alias for list)
+todoist-cli projects list
+todoist-cli projects show <id>
+todoist-cli items                (alias for list)
+todoist-cli items list
+todoist-cli items show <id>
+```

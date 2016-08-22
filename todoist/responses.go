@@ -4,14 +4,14 @@ import (
 	"fmt"
 )
 
-// Represents a response from the Sync API.
-type SyncResponse struct {
+// Represents a read response from the Sync API.
+type ReadResponse struct {
 	Items    []*ItemResponse
 	Projects []*ProjectResponse
 }
 
 // Returns the project with the given id, if any.
-func (r *SyncResponse) ProjectWithId(id int) *ProjectResponse {
+func (r *ReadResponse) ProjectWithId(id int) *ProjectResponse {
 	for _, project := range r.Projects {
 		if project.Id == id {
 			return project
@@ -22,7 +22,7 @@ func (r *SyncResponse) ProjectWithId(id int) *ProjectResponse {
 }
 
 // Returns the items associated with the given project.
-func (r *SyncResponse) ItemsForProject(id int) []*ItemResponse {
+func (r *ReadResponse) ItemsForProject(id int) []*ItemResponse {
 	items := []*ItemResponse{}
 
 	for _, item := range r.Items {
@@ -38,7 +38,7 @@ func (r *SyncResponse) ItemsForProject(id int) []*ItemResponse {
 //
 // Adds pointers to projects for each item and an array of pointers to
 // items for each project.
-func (r *SyncResponse) Denormalize() {
+func (r *ReadResponse) Denormalize() {
 	// Associate items with their project.
 	for _, item := range r.Items {
 		item.Project = r.ProjectWithId(item.ProjectId)

@@ -65,8 +65,8 @@ func generateBaseParams(userToken string, syncToken string, resourceTypes []Reso
 	}
 }
 
-// Calls the Sync service with the given inputs and returns the body decoded into a SyncResponse type.
-func (c *Client) callSyncService(syncToken string, resourceTypes []ResourceTyper) (*SyncResponse, error) {
+// Calls the Sync service with the given inputs and returns the body decoded into a ReadResponse type.
+func (c *Client) callSyncService(syncToken string, resourceTypes []ResourceTyper) (*ReadResponse, error) {
 	params := generateBaseParams(c.UserToken, syncToken, resourceTypes)
 	resp, err := http.PostForm(endpointUrl, params)
 	if err != nil {
@@ -79,7 +79,7 @@ func (c *Client) callSyncService(syncToken string, resourceTypes []ResourceTyper
 		return nil, err
 	}
 
-	model := &SyncResponse{}
+	model := &ReadResponse{}
 	if err = json.Unmarshal(responseBytes, model); err != nil {
 		return nil, err
 	}
@@ -89,7 +89,7 @@ func (c *Client) callSyncService(syncToken string, resourceTypes []ResourceTyper
 }
 
 // Fetches all data for the given user.
-func (c *Client) FetchAllData() (*SyncResponse, error) {
+func (c *Client) FetchAllData() (*ReadResponse, error) {
 	types := []ResourceTyper{allDataResourceType}
 	return c.callSyncService(initialSyncToken, types)
 }

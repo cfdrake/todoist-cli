@@ -6,8 +6,9 @@ import (
 )
 
 // Prints a message and exits the program.
-func die(a ...interface{}) {
+func die(format string, a ...interface{}) {
 	fmt.Fprint(os.Stderr, "ERROR: ")
-	fmt.Fprintln(os.Stderr, a...)
+	fmt.Fprintf(os.Stderr, format, a...)
+	fmt.Println()
 	os.Exit(1)
 }

@@ -44,7 +44,7 @@ func NewFileConfig() FileConfig {
 
 	file, err := ini.LoadFile(path)
 	if err != nil {
-		die("Expected to find config file at '" + path + "'")
+		die("Expected to find config file at '%s'...", path)
 	}
 
 	return FileConfig{backingFile: file}

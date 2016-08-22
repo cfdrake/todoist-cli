@@ -12,7 +12,7 @@ import (
 func parseId(idString string) int {
 	id, err := strconv.Atoi(idString)
 	if err != nil {
-		die("Could not parse '" + idString + "' as an ID")
+		die("Could not parse '%s' as an ID...", idString)
 	}
 	return id
 }

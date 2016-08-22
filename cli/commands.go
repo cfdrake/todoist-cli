@@ -3,8 +3,17 @@ package cli
 import (
 	"fmt"
 
+	"github.com/cfdrake/todoist-cli/todoist"
 	"github.com/ttacon/chalk"
 )
+
+func fetchProjectsAndItemOrFail() *todoist.ReadResult {
+	res, err := client.FetchProjectsAndItems()
+	if err != nil {
+		die("Could not fetch the requested data...")
+	}
+	return res
+}
 
 func displayAllItems() {
 	res, err := client.FetchItems()
@@ -23,11 +32,7 @@ func displayAllItems() {
 }
 
 func displayItem(id int) {
-	res, err := client.FetchProjectsAndItems()
-	if err != nil {
-		die("Could not fetch items...")
-	}
-
+	res := fetchProjectsAndItemOrFail()
 	item := res.ItemWithId(id)
 	itemHeader := fmt.Sprintf("Item: %s", item)
 	fmt.Println(chalk.Bold.TextStyle(itemHeader))
@@ -52,11 +57,7 @@ func displayAllProjects() {
 }
 
 func displayProject(id int) {
-	res, err := client.FetchProjectsAndItems()
-	if err != nil {
-		die("Could not fetch projects and/or items...")
-	}
-
+	res := fetchProjectsAndItemOrFail()
 	project := res.ProjectWithId(id)
 	projectHeader := fmt.Sprintf("Project: %s", project)
 	fmt.Println(chalk.Bold.TextStyle(projectHeader))

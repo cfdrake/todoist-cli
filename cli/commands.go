@@ -34,7 +34,9 @@ func displayProject(id int) {
 			fmt.Println(chalk.Bold.TextStyle(projectHeader))
 
 			for _, item := range project.Items {
-				fmt.Println("*", item)
+				if item.ShouldDisplay() {
+					fmt.Println("*", item)
+				}
 			}
 
 			break

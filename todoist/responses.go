@@ -55,12 +55,18 @@ type ItemResponse struct {
 	Id        int
 	Content   string
 	Indent    int
+	Archived  int `json:"is_archived"`
+	Deleted   int `json:"is_deleted"`
 	ProjectId int `json:"project_id"`
 	Project   *ProjectResponse
 }
 
 func (i ItemResponse) String() string {
 	return i.Content
+}
+
+func (i ItemResponse) ShouldDisplay() bool {
+	return i.Archived == 0 && i.Deleted == 0
 }
 
 // Represents a Project.

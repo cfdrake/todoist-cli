@@ -4,6 +4,10 @@ import (
 	"fmt"
 )
 
+//
+// TODO: Refactor read requests into a similar struct...
+//
+
 // A write command representation.
 type WriteCommand struct {
 	Type   string

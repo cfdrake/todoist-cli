@@ -32,7 +32,8 @@ Feel free to `chmod 0600 ~/.config/todoist-cli/config.ini` so only your user can
 
 Run the `todoist-cli` command without any parameters to receive help.
 
-To get help for a subcommand, try the following, for example: `todoist-cli projects help`.
+To get help for a subcommand, try the following, for example: `todoist-cli projects help`. This is
+additionally a great way to discover helpful command aliases (`p` for `projects`, etc).
 
 The following is a list of currently supported commands:
 

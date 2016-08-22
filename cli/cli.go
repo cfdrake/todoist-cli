@@ -4,10 +4,10 @@ import (
 	"os"
 	"os/user"
 	"strconv"
-)
 
-import "github.com/urfave/cli"
-import "github.com/cfdrake/todoist-cli/todoist"
+	"github.com/cfdrake/todoist-cli/todoist"
+	"github.com/urfave/cli"
+)
 
 // Shared app instance.
 var app *cli.App

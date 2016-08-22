@@ -2,9 +2,9 @@ package cli
 
 import (
 	"fmt"
-)
 
-import "github.com/ttacon/chalk"
+	"github.com/ttacon/chalk"
+)
 
 func displayAllProjects() {
 	projects, err := client.FetchProjects()

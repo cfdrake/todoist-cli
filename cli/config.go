@@ -4,9 +4,9 @@ import (
 	"errors"
 	"os/user"
 	"path"
-)
 
-import "github.com/vaughan0/go-ini"
+	"github.com/vaughan0/go-ini"
+)
 
 // Configuration file representation.
 type config struct {

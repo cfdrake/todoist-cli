@@ -33,7 +33,7 @@ func (r *ReadResult) ProjectWithId(id int) *Project {
 }
 
 // Returns the items associated with the given project.
-func (r *ReadResult) ItemsForProject(id int) []*Item {
+func (r *ReadResult) itemsForProject(id int) []*Item {
 	items := []*Item{}
 
 	for _, item := range r.Items {
@@ -47,7 +47,7 @@ func (r *ReadResult) ItemsForProject(id int) []*Item {
 
 // Denormalizes the dataset.
 // Adds pointers to projects for each item and an array of pointers to items for each project.
-func (r *ReadResult) Denormalize() {
+func (r *ReadResult) denormalize() {
 	// Associate items with their project.
 	for _, item := range r.Items {
 		item.Project = r.ProjectWithId(item.ProjectId)

@@ -2,6 +2,7 @@ package cli
 
 import (
 	"errors"
+	"fmt"
 	"os/user"
 	"path"
 
@@ -30,7 +31,8 @@ func loadConfiguration(user *user.User) (*config, error) {
 	// Load config from file.
 	file, err := ini.LoadFile(path)
 	if err != nil {
-		return nil, errors.New("Could not load config file")
+		msg := fmt.Sprintf("Expected to find config file at '%s'", path)
+		return nil, errors.New(msg)
 	}
 
 	c := new(config)
@@ -38,7 +40,13 @@ func loadConfiguration(user *user.User) (*config, error) {
 
 	// Check for missing data.
 	if c.userToken == "" {
-		return nil, errors.New("Could not load authorization token")
+		msg := `Missing token under [auth] section in config!
+
+Ensure your configuration file looks like the following:
+
+    [auth]
+    token = <your token here>`
+		return nil, errors.New(msg)
 	}
 
 	return c, nil

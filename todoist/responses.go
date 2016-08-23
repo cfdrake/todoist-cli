@@ -89,11 +89,6 @@ func (i Item) String() string {
 	return fmt.Sprintf("%s (%d)", i.Content, i.Id)
 }
 
-// Predicate indicating whether or not the item should be shown.
-func (i Item) ShouldDisplay() bool {
-	return i.Archived == 0 && i.Deleted == 0
-}
-
 // Represents a Project.
 type Project struct {
 	Id       int
@@ -107,9 +102,4 @@ type Project struct {
 // Adhere to Stringer interface.
 func (p Project) String() string {
 	return fmt.Sprintf("%s (%d)", p.Name, p.Id)
-}
-
-// Predicate indicating whether or not the project should be shown.
-func (p Project) ShouldDisplay() bool {
-	return p.Archived == 0 && p.Deleted == 0
 }

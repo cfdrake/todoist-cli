@@ -38,13 +38,11 @@ func displayAllProjects(client *todoist.Client) {
 	fmt.Println(chalk.Bold.TextStyle("All Projects"))
 
 	for _, project := range res.Projects {
-		if project.ShouldDisplay() {
-			indent(project.Indent)
-			if len(project.Items) > 0 {
-				fmt.Println("✘", project)
-			} else {
-				fmt.Println("✔", project)
-			}
+		indent(project.Indent)
+		if len(project.Items) > 0 {
+			fmt.Println("✘", project)
+		} else {
+			fmt.Println("✔", project)
 		}
 	}
 }
@@ -56,8 +54,6 @@ func displayProject(id int, client *todoist.Client) {
 	fmt.Println(chalk.Bold.TextStyle(projectHeader))
 
 	for _, item := range project.Items {
-		if item.ShouldDisplay() {
-			fmt.Println("✘", item)
-		}
+		fmt.Println("✘", item)
 	}
 }

@@ -32,7 +32,7 @@ func displayAllItems(client *todoist.Client) {
 	for _, item := range res.Items {
 		if item.ShouldDisplay() {
 			indent(item.Indent)
-			fmt.Println("*", item)
+			fmt.Println("✘", item)
 		}
 	}
 }
@@ -47,17 +47,17 @@ func displayItem(id int, client *todoist.Client) {
 }
 
 func displayAllProjects(client *todoist.Client) {
-	res, err := client.FetchProjects()
-	if err != nil {
-		die("Could not fetch projects...")
-	}
-
+	res := fetchProjectsAndItemsOrFail(client)
 	fmt.Println(chalk.Bold.TextStyle("All Projects"))
 
 	for _, project := range res.Projects {
 		if project.ShouldDisplay() {
 			indent(project.Indent)
-			fmt.Println("*", project)
+			if len(project.Items) > 0 {
+				fmt.Println("✘", project)
+			} else {
+				fmt.Println("✔", project)
+			}
 		}
 	}
 }
@@ -70,7 +70,7 @@ func displayProject(id int, client *todoist.Client) {
 
 	for _, item := range project.Items {
 		if item.ShouldDisplay() {
-			fmt.Println("*", item)
+			fmt.Println("✘", item)
 		}
 	}
 }

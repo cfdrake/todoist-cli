@@ -14,27 +14,14 @@ func indent(indentLevel int) {
 }
 
 func fetchProjectsAndItemsOrFail(client *todoist.Client) *todoist.ReadResult {
-	res, err := client.FetchProjectsAndItems()
-	if err != nil {
-		die("Could not fetch the requested data...")
+	res := new(todoist.ReadResult)
+	if err := client.MakeRequest(todoist.AllProjectsAndItemsRequest, res); err != nil {
+		die("Could not fetch the requested data... (%s)", err)
 	}
 	return res
 }
 
 func displayAllItems(client *todoist.Client) {
-	res, err := client.FetchItems()
-	if err != nil {
-		die("Could not fetch items...")
-	}
-
-	fmt.Println(chalk.Bold.TextStyle("All Items"))
-
-	for _, item := range res.Items {
-		if item.ShouldDisplay() {
-			indent(item.Indent)
-			fmt.Println("✘", item)
-		}
-	}
 }
 
 func displayItem(id int, client *todoist.Client) {

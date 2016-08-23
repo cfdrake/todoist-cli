@@ -1,113 +1,106 @@
 package todoist
 
 import (
-	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/http"
 	"net/url"
 )
 
-// Endpoint URL for the Todoist Sync API.
-const endpointUrl string = "https://todoist.com/API/v7/sync"
+// Represents a Sync API request type.
+type RequestParams url.Values
 
-// Resource type indicating what data to pull down.
-type resourceType string
-
-const (
-	itemsResourceType    resourceType = "items"
-	projectsResourceType resourceType = "projects"
-	allDataResourceType  resourceType = "all"
-)
-
-type ResourceTyper interface {
-	ResourceType() resourceType
+// Describes a type that may be unmarshaled via JSON response data.
+type ResponseUnmarshaler interface {
+	UnmarshalJson(bytes []byte) error
 }
 
-func (t resourceType) ResourceType() resourceType {
-	return t
-}
-
-// Client data type.
-type Client struct {
-	UserToken string
-}
-
-// Default sync token to fetch all data.
-const initialSyncToken string = "*"
-
-// Builds the resource types string expected by the Sync endpoint.
-func buildResourceTypesString(resourceTypes []ResourceTyper) string {
+// Builds a comma separated list string, for example: ["comma", "separated"].
+func buildListStr(types []string) string {
 	output := "["
-	first := true
 
-	for _, t := range resourceTypes {
-		if !first {
+	for i, t := range types {
+		if i > 0 {
 			output += ","
 		}
 
 		elem := fmt.Sprintf("\"%s\"", t)
 		output += elem
-		first = false
 	}
 
-	output += "]"
-	return output
+	return output + "]"
 }
 
-// Generates the basic required URL parameters to use for an API request.
-func generateBaseParams(userToken string, syncToken string, resourceTypes []ResourceTyper) url.Values {
-	typeString := buildResourceTypesString(resourceTypes)
-	return url.Values{
-		"token":          {userToken},
-		"sync_token":     {syncToken},
-		"resource_types": {typeString},
+// Creates a new parameter set to query all of the items in the given types array.
+func defaultParamsForAllResources(types []string) RequestParams {
+	allObjectsSyncToken := "*"
+	return RequestParams{
+		"sync_token":     {allObjectsSyncToken},
+		"resource_types": {buildListStr(types)},
 	}
 }
 
-// Performs a read request and returns the result from the Sync service.
-func (c *Client) performReadRequest(syncToken string, resourceTypes []ResourceTyper) (res *ReadResult, err error) {
-	params := generateBaseParams(c.UserToken, syncToken, resourceTypes)
-	resp, err := http.PostForm(endpointUrl, params)
+// Request for all data.
+var AllDataRequest = defaultParamsForAllResources([]string{"all"})
+
+// Request for all projects and items.
+var AllProjectsAndItemsRequest = defaultParamsForAllResources([]string{"projects", "items"})
+
+// Request for all items.
+var AllItemsRequest = defaultParamsForAllResources([]string{"items"})
+
+// Request for user account info.
+var UserRequest = defaultParamsForAllResources([]string{"user"})
+
+// Todoist Sync API client.
+// Carries a token corresponding to a user's session and acts on a base API URL.
+type Client struct {
+	Token      string
+	SyncApiUrl string
+}
+
+// Default production endpoint URL for the Todoist Sync API.
+const defaultSyncUrl string = "https://todoist.com/API/v7/sync"
+
+// Creates a client pointed to the default Todoist Sync API URL.
+func NewDefaultClient(token string) *Client {
+	return &Client{token, defaultSyncUrl}
+}
+
+// The base parameter values used by the API client.
+func (c Client) baseParams() RequestParams {
+	return RequestParams{
+		"token": {c.Token},
+	}
+}
+
+// Performs the given request, providing the response in the passed in object.
+// Response objects must know how to parse themselves from JSON.
+// Will short-circuit and return an error if one occurred during the request.
+func (c Client) MakeRequest(req RequestParams, res ResponseUnmarshaler) (err error) {
+	// Build parameter set.
+	params := c.baseParams()
+
+	for k, v := range req {
+		params[k] = v
+	}
+
+	// Make HTTP request.
+	resp, err := http.PostForm(c.SyncApiUrl, url.Values(params))
 	if err != nil {
 		return
 	}
 
+	// Parse JSON.
 	defer resp.Body.Close()
-	responseBytes, err := ioutil.ReadAll(resp.Body)
+	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return
 	}
 
-	res = &ReadResult{}
-	if err = json.Unmarshal(responseBytes, res); err != nil {
+	if err = res.UnmarshalJson(body); err != nil {
 		return
 	}
-	res.denormalize()
 
 	return
-}
-
-// Fetches all data for the given user.
-func (c *Client) FetchAllData() (*ReadResult, error) {
-	types := []ResourceTyper{allDataResourceType}
-	return c.performReadRequest(initialSyncToken, types)
-}
-
-// Fetches project and item data for the user.
-func (c *Client) FetchProjectsAndItems() (*ReadResult, error) {
-	types := []ResourceTyper{projectsResourceType, itemsResourceType}
-	return c.performReadRequest(initialSyncToken, types)
-}
-
-// Fetches item data for the user.
-func (c *Client) FetchItems() (*ReadResult, error) {
-	types := []ResourceTyper{itemsResourceType}
-	return c.performReadRequest(initialSyncToken, types)
-}
-
-// Fetches project data for the user.
-func (c *Client) FetchProjects() (*ReadResult, error) {
-	types := []ResourceTyper{projectsResourceType}
-	return c.performReadRequest(initialSyncToken, types)
 }

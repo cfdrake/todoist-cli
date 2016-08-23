@@ -26,7 +26,7 @@ type Application struct {
 // Creates a new application with the given configuration.
 func NewApp(config Configurer) *Application {
 	// Setup client and app instances.
-	client := &todoist.Client{UserToken: config.UserToken()}
+	client := todoist.NewDefaultClient(config.UserToken())
 	app := cli.NewApp()
 
 	app.Usage = "Todoist.com command line client"

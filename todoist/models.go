@@ -1,35 +1,25 @@
 package todoist
 
 import (
+	"encoding/json"
 	"fmt"
 )
 
-//
-// TODO: Refactor read requests into a similar struct...
-//
-
-// A write command representation.
-type WriteCommand struct {
-	Type   string
-	Args   map[string]string
-	Uuid   string
-	TempId string `json:"temp_id"`
-}
-
-// A request to perform an array of WriteCommands.
-type WriteRequest struct {
-	Commands []WriteCommand
-}
-
-// A write result.
-type WriteResult struct {
-	// TODO: ...
-}
-
-// Represents a read response from the Sync API.
+// Represents a read request result.
 type ReadResult struct {
 	Items    []*Item
 	Projects []*Project
+}
+
+// Unpacks a read result from a JSON representation.
+// Ensures this type adheres to JsonUnmarshaler.
+func (r *ReadResult) UnmarshalJson(bytes []byte) error {
+	if err := json.Unmarshal(bytes, r); err != nil {
+		return err
+	}
+
+	r.denormalize()
+	return nil
 }
 
 // Returns the item with the given id, if any.
@@ -55,6 +45,8 @@ func (r *ReadResult) ProjectWithId(id int) *Project {
 }
 
 // Returns the items associated with the given project.
+// This is meant for internal use: clients calling this code should use the denormalized
+// representation to traverse project structure.
 func (r *ReadResult) itemsForProject(id int) []*Item {
 	items := []*Item{}
 

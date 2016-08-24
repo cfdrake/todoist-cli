@@ -7,17 +7,26 @@ import (
 	"github.com/urfave/cli"
 )
 
+func displayItem(item *todoist.Item) {
+	fmt.Printf("%s%s %s\n", indent(item.Indent), checkmark(false), item)
+}
+
 func ItemCommands(client *todoist.Client) cli.Command {
 	var displayAll = func(c *cli.Context) error {
 		items := fetchItems(client)
-		for _, i := range items {
-			fmt.Printf("%s%s %s\n", indent(i.Indent), checkmark(false), i)
+		for _, item := range items {
+			displayItem(item)
 		}
 		return nil
 	}
 
 	var displayOne = func(c *cli.Context) error {
-		fmt.Println("display one")
+		id := parseInt(c.Args().Get(0))
+		items := fetchItems(client)
+		item := todoist.ItemWithId(items, id)
+		if item != nil {
+			displayItem(item)
+		}
 		return nil
 	}
 

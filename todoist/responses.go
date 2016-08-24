@@ -23,8 +23,8 @@ func (r *ReadResult) UnmarshalJson(bytes []byte) error {
 }
 
 // Returns the item with the given id, if any.
-func (r *ReadResult) ItemWithId(id int) *Item {
-	for _, item := range r.Items {
+func ItemWithId(items []*Item, id int) *Item {
+	for _, item := range items {
 		if item.Id == id {
 			return item
 		}
@@ -34,8 +34,8 @@ func (r *ReadResult) ItemWithId(id int) *Item {
 }
 
 // Returns the project with the given id, if any.
-func (r *ReadResult) ProjectWithId(id int) *Project {
-	for _, project := range r.Projects {
+func ProjectWithId(projects []*Project, id int) *Project {
+	for _, project := range projects {
 		if project.Id == id {
 			return project
 		}
@@ -64,7 +64,7 @@ func (r *ReadResult) itemsForProject(id int) []*Item {
 func (r *ReadResult) denormalize() {
 	// Associate items with their project.
 	for _, item := range r.Items {
-		item.Project = r.ProjectWithId(item.ProjectId)
+		item.Project = ProjectWithId(r.Projects, item.ProjectId)
 	}
 
 	// Associate projects with their items.

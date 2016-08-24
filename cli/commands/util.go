@@ -3,10 +3,19 @@ package commands
 import (
 	"fmt"
 	"os"
+	"strconv"
 	"strings"
 
 	"github.com/cfdrake/todoist-cli/todoist"
 )
+
+func parseInt(intStr string) int {
+	n, err := strconv.Atoi(intStr)
+	if err != nil {
+		die("Could not parse '%s' as an ID", intStr)
+	}
+	return n
+}
 
 func checkmark(checked bool) string {
 	if checked {

@@ -38,6 +38,23 @@ func defaultParamsForAllResources(types []string) RequestParams {
 	}
 }
 
+// Represents a command in a request.
+type command struct {
+	Kind string                 `json:"type"`
+	Uuid string                 `json:"uuid"`
+	Args map[string]interface{} `json:"args"`
+}
+
+// Returns the command represented as a JSON formatted string.
+func (c command) JsonString() string {
+	commands := []command{c}
+	buf := new(bytes.Buffer)
+	e := json.NewEncoder(buf)
+	e.Encode(commands)
+	jsonStr := buf.String()
+	return jsonStr
+}
+
 // Request for all data.
 var AllDataRequest = defaultParamsForAllResources([]string{"all"})
 
@@ -49,22 +66,6 @@ var AllItemsRequest = defaultParamsForAllResources([]string{"items"})
 
 // Request for user account info.
 var UserRequest = defaultParamsForAllResources([]string{"user"})
-
-// Represents a command request.
-type command struct {
-	Kind string                 `json:"type"`
-	Uuid string                 `json:"uuid"`
-	Args map[string]interface{} `json:"args"`
-}
-
-func (c command) JsonString() string {
-	commands := []command{c}
-	buf := new(bytes.Buffer)
-	e := json.NewEncoder(buf)
-	e.Encode(commands)
-	jsonStr := buf.String()
-	return jsonStr
-}
 
 // Request to complete an item.
 func CompleteItemRequest(id int) RequestParams {

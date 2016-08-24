@@ -5,6 +5,18 @@ import (
 	"fmt"
 )
 
+// Represents a write request result.
+type WriteResult struct{}
+
+// Unpacks a write result from a JSON representation.
+// Ensures this type adheres to JsonUnmarshaler.
+func (r *WriteResult) UnmarshalJson(bytes []byte) error {
+	if err := json.Unmarshal(bytes, r); err != nil {
+		return err
+	}
+	return nil
+}
+
 // Represents a read request result.
 type ReadResult struct {
 	Items    []*Item

@@ -33,7 +33,12 @@ func ItemCommands(client *todoist.Client) cli.Command {
 	}
 
 	var toggle = func(c *cli.Context) error {
-		fmt.Println("toggle")
+		id := parseInt(c.Args().Get(0))
+		if ok := toggleItem(id, client); ok {
+			fmt.Println("Toggled item...")
+		} else {
+			fmt.Println("Could not toggle item...")
+		}
 		return nil
 	}
 

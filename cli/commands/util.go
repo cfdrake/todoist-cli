@@ -35,6 +35,18 @@ func die(format string, a ...interface{}) {
 	os.Exit(1)
 }
 
+func toggleItem(id int, client *todoist.Client) bool {
+	items := fetchItems(client)
+	item := todoist.ItemWithId(items, id)
+	if item == nil {
+		return false
+	}
+
+	res := new(todoist.WriteResult)
+	err := client.MakeRequest(todoist.CompleteItemRequest(id), res)
+	return err == nil
+}
+
 func fetchItems(client *todoist.Client) []*todoist.Item {
 	res := new(todoist.ReadResult)
 	err := client.MakeRequest(todoist.AllItemsRequest, res)

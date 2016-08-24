@@ -5,6 +5,9 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/url"
+	"strconv"
+
+	"github.com/satori/go.uuid"
 )
 
 // Represents a Sync API request type.
@@ -51,6 +54,15 @@ var AllItemsRequest = defaultParamsForAllResources([]string{"items"})
 
 // Request for user account info.
 var UserRequest = defaultParamsForAllResources([]string{"user"})
+
+func CompleteItemRequest(id int) RequestParams {
+	uuid := uuid.NewV4().String()
+	idString := strconv.Itoa(id)
+	jsonEncoded := "[{\"type\": \"item_complete\", \"uuid\": \"" + uuid + "\", \"args\": {\"ids\": [\"" + idString + "\"]}}]"
+	return RequestParams{
+		"commands": {jsonEncoded},
+	}
+}
 
 // Todoist Sync API client.
 // Carries a token corresponding to a user's session and acts on a base API URL.

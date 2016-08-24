@@ -55,6 +55,7 @@ var AllItemsRequest = defaultParamsForAllResources([]string{"items"})
 // Request for user account info.
 var UserRequest = defaultParamsForAllResources([]string{"user"})
 
+// Request to complete an item.
 func CompleteItemRequest(id int) RequestParams {
 	uuid := uuid.NewV4().String()
 	idString := strconv.Itoa(id)

@@ -35,7 +35,7 @@ func die(format string, a ...interface{}) {
 	os.Exit(1)
 }
 
-func toggleItem(id int, client *todoist.Client) bool {
+func closeItem(id int, client *todoist.Client) bool {
 	items := fetchItems(client)
 	item := todoist.ItemWithId(items, id)
 	if item == nil {

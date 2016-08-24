@@ -63,8 +63,8 @@ func ProjectCommands(client *todoist.Client) cli.Command {
 				Action:  displayOne,
 			},
 			{
-				Name:    "create",
-				Aliases: []string{"c"},
+				Name:    "new",
+				Aliases: []string{"n"},
 				Usage:   "Create new project",
 				Action:  create,
 			},

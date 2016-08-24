@@ -32,12 +32,12 @@ func ItemCommands(client *todoist.Client) cli.Command {
 		return nil
 	}
 
-	var toggle = func(c *cli.Context) error {
+	var close = func(c *cli.Context) error {
 		id := parseInt(c.Args().Get(0))
-		if ok := toggleItem(id, client); ok {
-			fmt.Println("Toggled item...")
+		if ok := closeItem(id, client); ok {
+			fmt.Println("Closed item...")
 		} else {
-			fmt.Println("Could not toggle item...")
+			fmt.Println("Could not close item...")
 		}
 		return nil
 	}
@@ -66,14 +66,14 @@ func ItemCommands(client *todoist.Client) cli.Command {
 				Action:  displayOne,
 			},
 			{
-				Name:    "toggle",
-				Aliases: []string{"t"},
-				Usage:   "Toggle item checked status",
-				Action:  toggle,
+				Name:    "close",
+				Aliases: []string{"c"},
+				Usage:   "Close unchecked item",
+				Action:  close,
 			},
 			{
-				Name:    "create",
-				Aliases: []string{"c"},
+				Name:    "new",
+				Aliases: []string{"n"},
 				Usage:   "Create new item",
 				Action:  create,
 			},

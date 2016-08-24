@@ -26,6 +26,15 @@ func die(format string, a ...interface{}) {
 	os.Exit(1)
 }
 
+func fetchItems(client *todoist.Client) []*todoist.Item {
+	res := new(todoist.ReadResult)
+	err := client.MakeRequest(todoist.AllItemsRequest, res)
+	if err != nil {
+		die("Could not fetch items... (%s)", err)
+	}
+	return res.Items
+}
+
 func fetchProjectsAndItems(client *todoist.Client) ([]*todoist.Project, []*todoist.Item) {
 	res := new(todoist.ReadResult)
 	err := client.MakeRequest(todoist.AllProjectsAndItemsRequest, res)

@@ -9,7 +9,10 @@ import (
 
 func ItemCommands(client *todoist.Client) cli.Command {
 	var displayAll = func(c *cli.Context) error {
-		fmt.Println("display all")
+		items := fetchItems(client)
+		for _, i := range items {
+			fmt.Printf("%s%s %s\n", indent(i.Indent), checkmark(false), i)
+		}
 		return nil
 	}
 

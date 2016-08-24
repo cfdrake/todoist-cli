@@ -8,7 +8,15 @@ import (
 	"github.com/cfdrake/todoist-cli/todoist"
 )
 
-func spaceIndent(indentLevel int) string {
+func checkmark(checked bool) string {
+	if checked {
+		return "✔"
+	} else {
+		return "✘"
+	}
+}
+
+func indent(indentLevel int) string {
 	return strings.Repeat(" ", indentLevel-1)
 }
 

@@ -9,7 +9,11 @@ import (
 
 func ProjectCommands(client *todoist.Client) cli.Command {
 	var displayAll = func(c *cli.Context) error {
-		fmt.Println("display all")
+		projects, _ := fetchProjectsAndItems(client)
+		for _, p := range projects {
+			checked := len(p.Items) == 0
+			fmt.Printf("%s%s %s\n", indent(p.Indent), checkmark(checked), p)
+		}
 		return nil
 	}
 

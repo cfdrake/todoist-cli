@@ -48,4 +48,4 @@ todoist-cli items show <id>
 
 ## License
 
-See the `LICENSE.md` file for details.
+See the `LICENSE` file for details.

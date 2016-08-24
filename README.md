@@ -6,7 +6,7 @@ A simple command line interface for managing [Todoist](http://todoist.com) proje
 
 During early development, you may install this software only using `go get`:
 
-    $ go get github.com/cfdrake/todoist-cli
+    $ go get -u github.com/cfdrake/todoist-cli
 
 Later, I'd like to distribute this using Homebrew.
 

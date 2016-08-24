@@ -7,18 +7,35 @@ import (
 	"github.com/urfave/cli"
 )
 
+func displayProject(project *todoist.Project, indented bool) {
+	var whitespace string
+	if indented {
+		whitespace = indent(project.Indent)
+	} else {
+		whitespace = ""
+	}
+	checked := len(project.Items) == 0
+	fmt.Printf("%s%s %s\n", whitespace, checkmark(checked), project)
+}
+
 func ProjectCommands(client *todoist.Client) cli.Command {
 	var displayAll = func(c *cli.Context) error {
 		projects, _ := fetchProjectsAndItems(client)
-		for _, p := range projects {
-			checked := len(p.Items) == 0
-			fmt.Printf("%s%s %s\n", indent(p.Indent), checkmark(checked), p)
+		for _, project := range projects {
+			displayProject(project, true)
 		}
 		return nil
 	}
 
 	var displayOne = func(c *cli.Context) error {
-		fmt.Println("display one")
+		id := parseInt(c.Args().Get(0))
+		projects, _ := fetchProjectsAndItems(client)
+		project := todoist.ProjectWithId(projects, id)
+		if project != nil {
+			displayProject(project, false)
+		} else {
+			die("No such project")
+		}
 		return nil
 	}
 

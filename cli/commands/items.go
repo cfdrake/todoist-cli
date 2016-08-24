@@ -26,6 +26,8 @@ func ItemCommands(client *todoist.Client) cli.Command {
 		item := todoist.ItemWithId(items, id)
 		if item != nil {
 			displayItem(item)
+		} else {
+			die("No such item")
 		}
 		return nil
 	}

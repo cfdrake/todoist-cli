@@ -5,6 +5,11 @@ import (
 	"fmt"
 )
 
+// Describes a type that may be unmarshaled via JSON response data.
+type ResponseUnmarshaler interface {
+	UnmarshalJson(bytes []byte) error
+}
+
 // Represents a write request result.
 type WriteResult struct{}
 

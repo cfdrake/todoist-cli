@@ -38,12 +38,10 @@ func Config() FileConfig {
 func (f FileConfig) UserToken() string {
 	token, ok := f.file.Get("auth", "token")
 	if !ok {
-		die(`Missing token under [auth] section in config!
-
-Ensure your configuration file looks like the following:
-
-    [auth]
-    token = <your token here>`)
+		die("Missing token under [auth] section in config!\n" +
+			"Ensure your configuration file looks like the following:\n\n" +
+			"[auth]\n" +
+			"token = <your token here>")
 	}
 	return token
 }

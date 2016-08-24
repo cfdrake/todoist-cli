@@ -57,25 +57,26 @@ type command struct {
 	Args map[string]interface{} `json:"args"`
 }
 
+func (c command) JsonString() string {
+	commands := []command{c}
+	buf := new(bytes.Buffer)
+	e := json.NewEncoder(buf)
+	e.Encode(commands)
+	jsonStr := buf.String()
+	return jsonStr
+}
+
 // Request to complete an item.
 func CompleteItemRequest(id int) RequestParams {
 	uuid := uuid.NewV4().String()
 	idStr := strconv.Itoa(id)
-	cmd := []command{
-		{
-			Kind: "item_complete",
-			Uuid: uuid,
-			Args: map[string]interface{}{
-				"ids": []string{idStr},
-			},
+	cmd := command{
+		Kind: "item_complete",
+		Uuid: uuid,
+		Args: map[string]interface{}{
+			"ids": []string{idStr},
 		},
 	}
 
-	buf := new(bytes.Buffer)
-	e := json.NewEncoder(buf)
-	e.Encode(cmd)
-	jsonStr := buf.String()
-	fmt.Println(jsonStr)
-
-	return RequestParams{"commands": {jsonStr}}
+	return RequestParams{"commands": {cmd.JsonString()}}
 }

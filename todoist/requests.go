@@ -1,6 +1,8 @@
 package todoist
 
 import (
+	"bytes"
+	"encoding/json"
 	"fmt"
 	"net/url"
 	"strconv"
@@ -48,12 +50,32 @@ var AllItemsRequest = defaultParamsForAllResources([]string{"items"})
 // Request for user account info.
 var UserRequest = defaultParamsForAllResources([]string{"user"})
 
+// Represents a command request.
+type command struct {
+	Kind string                 `json:"type"`
+	Uuid string                 `json:"uuid"`
+	Args map[string]interface{} `json:"args"`
+}
+
 // Request to complete an item.
 func CompleteItemRequest(id int) RequestParams {
 	uuid := uuid.NewV4().String()
-	idString := strconv.Itoa(id)
-	jsonEncoded := "[{\"type\": \"item_complete\", \"uuid\": \"" + uuid + "\", \"args\": {\"ids\": [\"" + idString + "\"]}}]"
-	return RequestParams{
-		"commands": {jsonEncoded},
+	idStr := strconv.Itoa(id)
+	cmd := []command{
+		{
+			Kind: "item_complete",
+			Uuid: uuid,
+			Args: map[string]interface{}{
+				"ids": []string{idStr},
+			},
+		},
 	}
+
+	buf := new(bytes.Buffer)
+	e := json.NewEncoder(buf)
+	e.Encode(cmd)
+	jsonStr := buf.String()
+	fmt.Println(jsonStr)
+
+	return RequestParams{"commands": {jsonStr}}
 }

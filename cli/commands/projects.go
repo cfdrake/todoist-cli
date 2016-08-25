@@ -18,6 +18,12 @@ func displayProject(project *todoist.Project, indented bool) {
 	fmt.Printf("%s%s %s\n", whitespace, checkmark(checked), project)
 }
 
+func displayProjectItems(project *todoist.Project) {
+	for _, item := range project.Items {
+		displayItem(item)
+	}
+}
+
 func ProjectCommands(client *todoist.Client) cli.Command {
 	var displayAll = func(c *cli.Context) error {
 		projects, _ := fetchProjectsAndItems(client)
@@ -33,6 +39,7 @@ func ProjectCommands(client *todoist.Client) cli.Command {
 		project := todoist.ProjectWithId(projects, id)
 		if project != nil {
 			displayProject(project, false)
+			displayProjectItems(project)
 		} else {
 			die("No such project")
 		}

@@ -28,6 +28,7 @@ func NewApp(config Configurer) *Application {
 	app.Commands = []cli.Command{
 		commands.ItemCommands(client),
 		commands.ProjectCommands(client),
+		commands.UserCommands(client),
 	}
 
 	return &Application{app}

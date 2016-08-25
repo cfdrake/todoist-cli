@@ -26,6 +26,7 @@ func (r *WriteResult) UnmarshalJson(bytes []byte) error {
 type ReadResult struct {
 	Items    []*Item
 	Projects []*Project
+	User     *User
 }
 
 // Unpacks a read result from a JSON representation.
@@ -119,4 +120,14 @@ type Project struct {
 // Adhere to Stringer interface.
 func (p Project) String() string {
 	return fmt.Sprintf("%s (%d)", p.Name, p.Id)
+}
+
+// Represents a User.
+type User struct {
+	FullName       string  `json:"full_name"`
+	Email          string  `json:"email"`
+	CompletedToday int     `json:"completed_today"`
+	NextWeek       int     `json:"next_week"`
+	CompletedCount int     `json:"completed_count"`
+	Karma          float64 `json:"karma"`
 }

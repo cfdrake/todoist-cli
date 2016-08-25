@@ -1,9 +1,26 @@
-release:
-	env GOOS=darwin GOARCH=amd64 go build -o todoist-cli-osx-amd64
-	env GOOS=linux GOARCH=amd64 go build -o todoist-cli-linux-amd64
-	tar -cvzf todoist-cli-osx-amd64.tar.gz todoist-cli-osx-amd64
-	tar -cvzf todoist-cli-linux-amd64.tar.gz todoist-cli-linux-amd64
+GO=go
+VERSION=0.1.0-SNAPSHOT
+
+default:
+	$(GO) build
+
+get_gox:
+	@echo "Fetching build dependencies..."
+	$(GO) get github.com/mitchellh/gox
+
+osx: get_gox
+	@echo "Building for OS X..."
+	$(GOPATH)/bin/gox -osarch darwin/amd64
+	mv todoist-cli_darwin_amd64 todoist-cli
+	tar -cvzf todoist-cli-$(VERSION)-darwin-amd64.tar.gz todoist-cli
+
+linux: get_gox
+	@echo "Building for Linux..."
+	$(GOPATH)/bin/gox -osarch linux/amd64
+	mv todoist-cli_linux_amd64 todoist-cli
+	tar -cvzf todoist-cli-$(VERSION)-linux-amd64.tar.gz todoist-cli
+
+release: osx linux
 
 clean:
-	rm -rf todoist-cli-{linux,osx}-amd64
-	rm -rf todoist-cli-{linux,osx}-amd64.tar.gz
+	rm -rf todoist-cli-*-{darwin,linux}-amd64.tar.gz todoist-cli

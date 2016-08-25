@@ -2,15 +2,4 @@ language: go
 go:
 - 1.7
 script:
-- make release
-deploy:
-  provider: releases
-  branch: master
-  skip_cleanup: true
-  api_key:
-    secure: sXP94m7Gq1rQv9SeA2i+XTz4GSwee3OqL9Px+WEap5+nF4ZgteBkVstnVF/H7ujiKiGULCtWmT+9mnnR6pPBGaAw/OmThxdUbllotrgwoHynOZk4FzE9sUErFbLN00FJJodS2KuKxgBYhjKuHfqv/Neag/hDNzpH9U+eFBjaNd4SGPiyKYYPO5E52+TgojlLDuGSRYdgTQhk9bop2zsn2lOJTE+4L0LRsK1nWit67ItAWjAZiDGywVxo5DEKnVOpdmFT700azEd51FTIsnztmJIsfZlWxawWojzoGvlG389fxAxZWynJmNbg9/iPyJmZSuOsKkxA+YwkMeqiHvA3peZgXMyL0i/mrfGFKXHxCOVfDyGKc0kzhSCXjdxwW1bu67VgFL04ZSeLU8W2wurf9BycfsMmzzlf2sIlxUcR5SugFnZkoXJyetoPfGORO9KAwpMoumq8T0HJOz7jjsZVsMzVzui6X4G+wv55LfTnFCaWCzBb6ObxQEvjdyDHkh5Qbht52DPHECgANIj5XtVtr1bPgF/N0WdOkWe5juyLcwzZpZ8ioz5cefiMuInPz5uuMD3oobyBXlpsWffrxrSC6itg9ZWV2oaWncmYyfb2PTyORM7aWZVu0VEcx2FcYVFM6MjRCr3tzST5ISjtOVOZRU/fpiAe4YJecuLEEep5q+s=
-  file:
-    - todoist-cli-darwin-amd64.tar.gz
-    - todoist-cli-linux-amd64.tar.gz
-  on:
-    repo: cfdrake/todoist-cli
+- make

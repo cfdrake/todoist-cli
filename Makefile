@@ -2,6 +2,7 @@ GO=go
 VERSION=0.1.0-SNAPSHOT
 
 default:
+	go get
 	$(GO) build
 
 get_gox:

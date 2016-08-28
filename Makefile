@@ -2,9 +2,9 @@ GO=go
 VERSION=0.1.0-SNAPSHOT
 SRC=main.go config.go cli/*.go cli/commands/*.go todoist/*.go
 
+.PHONY: all_release_platforms
 .PHONY: release
 .PHONY: clean
-.PHONY: package
 .PHONY: default
 
 todoist-cli: $(SRC)
@@ -16,9 +16,9 @@ todoist-cli_darwin_amd64: $(SRC)
 todoist-cli_linux_amd64: $(SRC)
 	$(GOPATH)/bin/gox -osarch linux/amd64
 
-release: todoist-cli_darwin_amd64 todoist-cli_linux_amd64
+all_release_platforms: todoist-cli_darwin_amd64 todoist-cli_linux_amd64
 
-package: release
+release: all_release_platforms
 	tar -czf todoist-cli-$(VERSION)_darwin_amd64.tar.gz todoist-cli_darwin_amd64
 	tar -czf todoist-cli-$(VERSION)_linux_amd64.tar.gz todoist-cli_linux_amd64
 

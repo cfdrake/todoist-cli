@@ -18,7 +18,7 @@ func NewApp(config Configurer) *Application {
 
 	app := cli.NewApp()
 	app.Usage = "Todoist.com command line client"
-	app.Version = "0.1.0"
+	app.Version = "0.1.0-SNAPSHOT"
 	app.Authors = []cli.Author{
 		cli.Author{
 			Name:  "Colin Drake",

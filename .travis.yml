@@ -2,4 +2,6 @@ language: go
 go:
 - 1.7
 script:
-- make
+- go get github.com/mitchellh/gox
+- go get
+- make package

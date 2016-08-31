@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/cfdrake/todoist-cli/todoist"
+	"github.com/ttacon/chalk"
 	"github.com/urfave/cli"
 )
 
@@ -14,10 +15,11 @@ func UserCommands(client *todoist.Client) cli.Command {
 
 		if err == nil {
 			u := res.User
-			fmt.Printf("%s (%s)\n", u.FullName, u.Email)
-			fmt.Printf("* Completed Today: %d\n", u.CompletedToday)
-			fmt.Printf("* Total Completed: %d\n", u.CompletedCount)
-			fmt.Printf("* Karma: %.1f\n", u.Karma)
+			fmt.Printf(chalk.Bold.TextStyle("%s\n\n"), u.FullName)
+			printAttr(" Email", "%s", u.Email)
+			printAttr(" Completed Today", "%d", u.CompletedToday)
+			printAttr(" Completed Total", "%d", u.CompletedCount)
+			printAttr(" Karma", "%.1f", u.Karma)
 		} else {
 			die("Could not load user information... (%s)", err)
 		}

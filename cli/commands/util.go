@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/cfdrake/todoist-cli/todoist"
+	"github.com/ttacon/chalk"
 )
 
 func parseInt(intStr string) int {
@@ -27,6 +28,12 @@ func checkmark(checked bool) string {
 
 func indent(indentLevel int) string {
 	return strings.Repeat(" ", indentLevel-1)
+}
+
+func printAttr(name string, format string, a ...interface{}) {
+	fmt.Printf(chalk.Dim.TextStyle("%s: "), name)
+	fmt.Printf(format, a...)
+	fmt.Println()
 }
 
 func die(format string, a ...interface{}) {

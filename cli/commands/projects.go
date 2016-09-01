@@ -26,8 +26,8 @@ func displayProjectItems(project *todoist.Project) {
 
 func ProjectCommands(client *todoist.Client) cli.Command {
 	var displayAll = func(c *cli.Context) error {
-		projects, _ := fetchProjectsAndItems(client)
-		for _, project := range projects {
+		res := requireReadResult(client, todoist.AllProjectsAndItemsRequest)
+		for _, project := range res.Projects {
 			displayProject(project, true)
 		}
 		return nil

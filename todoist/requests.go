@@ -40,9 +40,10 @@ func defaultParamsForAllResources(types []string) RequestParams {
 
 // Represents a command in a request.
 type command struct {
-	Kind string                 `json:"type"`
-	Uuid string                 `json:"uuid"`
-	Args map[string]interface{} `json:"args"`
+	Kind   string                 `json:"type"`
+	Uuid   string                 `json:"uuid"`
+	TempId *string                `json:"temp_id"`
+	Args   map[string]interface{} `json:"args"`
 }
 
 // Returns the command represented as a JSON formatted string.
@@ -69,13 +70,31 @@ var UserRequest = defaultParamsForAllResources([]string{"user"})
 
 // Request to complete an item.
 func CompleteItemRequest(id int) RequestParams {
-	uuid := uuid.NewV4().String()
+	operationUuid := uuid.NewV4().String()
 	idStr := strconv.Itoa(id)
 	cmd := command{
-		Kind: "item_complete",
-		Uuid: uuid,
+		Kind:   "item_complete",
+		Uuid:   operationUuid,
+		TempId: nil,
 		Args: map[string]interface{}{
 			"ids": []string{idStr},
+		},
+	}
+
+	return RequestParams{"commands": {cmd.JsonString()}}
+}
+
+// Request to create an item.
+func CreateItemRequest(content string, projectId int) RequestParams {
+	operationUuid := uuid.NewV4().String()
+	tempId := uuid.NewV4().String()
+	cmd := command{
+		Kind:   "item_add",
+		Uuid:   operationUuid,
+		TempId: &tempId,
+		Args: map[string]interface{}{
+			"content":    content,
+			"project_id": projectId,
 		},
 	}
 

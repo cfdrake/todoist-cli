@@ -40,7 +40,10 @@ func ItemCommands(client *todoist.Client) cli.Command {
 	}
 
 	var create = func(c *cli.Context) error {
-		fmt.Println("create")
+		args := c.Args()
+		contents := args.Get(0)
+		projectId := parseInt(args.Get(1))
+		requireWriteResult(client, todoist.CreateItemRequest(contents, projectId))
 		return nil
 	}
 

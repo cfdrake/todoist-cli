@@ -43,6 +43,7 @@ todoist-cli projects list
 todoist-cli projects show <id>
 todoist-cli items                (alias for list)
 todoist-cli items list
+todoist-cli items new <title> <id>
 todoist-cli items show <id>
 todoist-cli items close <id>
 todoist-cli user

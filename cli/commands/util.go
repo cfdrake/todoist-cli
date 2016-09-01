@@ -42,6 +42,12 @@ func die(format string, a ...interface{}) {
 	os.Exit(1)
 }
 
+func makeRequiredRequest(c *todoist.Client, req todoist.RequestParams, res todoist.ResponseUnmarshaler) {
+	if err := c.MakeRequest(req, res); err != nil {
+		die("Networking error (%s)...", err)
+	}
+}
+
 func closeItem(id int, client *todoist.Client) bool {
 	items := fetchItems(client)
 	item := todoist.ItemWithId(items, id)

@@ -11,18 +11,14 @@ import (
 func UserCommands(client *todoist.Client) cli.Command {
 	var info = func(c *cli.Context) error {
 		res := new(todoist.ReadResult)
-		err := client.MakeRequest(todoist.UserRequest, res)
+		makeRequiredRequest(client, todoist.UserRequest, res)
+		u := res.User
 
-		if err == nil {
-			u := res.User
-			fmt.Printf(chalk.Bold.TextStyle("%s\n\n"), u.FullName)
-			printAttr(" Email", "%s", u.Email)
-			printAttr(" Completed Today", "%d", u.CompletedToday)
-			printAttr(" Completed Total", "%d", u.CompletedCount)
-			printAttr(" Karma", "%.1f", u.Karma)
-		} else {
-			die("Could not load user information... (%s)", err)
-		}
+		fmt.Printf(chalk.Bold.TextStyle("%s\n\n"), u.FullName)
+		printAttr(" Email", "%s", u.Email)
+		printAttr(" Completed Today", "%d", u.CompletedToday)
+		printAttr(" Completed Total", "%d", u.CompletedCount)
+		printAttr(" Karma", "%.1f", u.Karma)
 
 		return nil
 	}

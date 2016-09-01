@@ -10,8 +10,7 @@ import (
 
 func UserCommands(client *todoist.Client) cli.Command {
 	var info = func(c *cli.Context) error {
-		res := new(todoist.ReadResult)
-		makeRequiredRequest(client, todoist.UserRequest, res)
+		res := requireReadResult(client, todoist.UserRequest)
 		u := res.User
 
 		fmt.Printf(chalk.Bold.TextStyle("%s\n\n"), u.FullName)

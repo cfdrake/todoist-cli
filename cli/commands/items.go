@@ -13,8 +13,8 @@ func displayItem(item *todoist.Item) {
 
 func ItemCommands(client *todoist.Client) cli.Command {
 	var displayAll = func(c *cli.Context) error {
-		items := fetchItems(client)
-		for _, item := range items {
+		res := requireReadResult(client, todoist.AllItemsRequest)
+		for _, item := range res.Items {
 			displayItem(item)
 		}
 		return nil
@@ -22,8 +22,8 @@ func ItemCommands(client *todoist.Client) cli.Command {
 
 	var displayOne = func(c *cli.Context) error {
 		id := parseInt(c.Args().Get(0))
-		items := fetchItems(client)
-		item := todoist.ItemWithId(items, id)
+		res := requireReadResult(client, todoist.AllItemsRequest)
+		item := todoist.ItemWithId(res.Items, id)
 		if item != nil {
 			displayItem(item)
 		} else {
@@ -34,11 +34,8 @@ func ItemCommands(client *todoist.Client) cli.Command {
 
 	var close = func(c *cli.Context) error {
 		id := parseInt(c.Args().Get(0))
-		if ok := closeItem(id, client); ok {
-			fmt.Println("Closed item...")
-		} else {
-			fmt.Println("Could not close item...")
-		}
+		_ = requireWriteResult(client, todoist.CompleteItemRequest(id))
+		fmt.Println("Closing item...")
 		return nil
 	}
 

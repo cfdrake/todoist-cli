@@ -42,31 +42,20 @@ func die(format string, a ...interface{}) {
 	os.Exit(1)
 }
 
-func makeRequiredRequest(c *todoist.Client, req todoist.RequestParams, res todoist.ResponseUnmarshaler) {
+func requireWriteResult(c *todoist.Client, req todoist.RequestParams) *todoist.WriteResult {
+	res := new(todoist.WriteResult)
 	if err := c.MakeRequest(req, res); err != nil {
 		die("Networking error (%s)...", err)
 	}
+	return res
 }
 
-func closeItem(id int, client *todoist.Client) bool {
-	items := fetchItems(client)
-	item := todoist.ItemWithId(items, id)
-	if item == nil {
-		return false
-	}
-
-	res := new(todoist.WriteResult)
-	err := client.MakeRequest(todoist.CompleteItemRequest(id), res)
-	return err == nil
-}
-
-func fetchItems(client *todoist.Client) []*todoist.Item {
+func requireReadResult(c *todoist.Client, req todoist.RequestParams) *todoist.ReadResult {
 	res := new(todoist.ReadResult)
-	err := client.MakeRequest(todoist.AllItemsRequest, res)
-	if err != nil {
-		die("Could not fetch items... (%s)", err)
+	if err := c.MakeRequest(req, res); err != nil {
+		die("Networking error (%s)...", err)
 	}
-	return res.Items
+	return res
 }
 
 func fetchProjectsAndItems(client *todoist.Client) ([]*todoist.Project, []*todoist.Item) {

@@ -57,12 +57,3 @@ func requireReadResult(c *todoist.Client, req todoist.RequestParams) *todoist.Re
 	}
 	return res
 }
-
-func fetchProjectsAndItems(client *todoist.Client) ([]*todoist.Project, []*todoist.Item) {
-	res := new(todoist.ReadResult)
-	err := client.MakeRequest(todoist.AllProjectsAndItemsRequest, res)
-	if err != nil {
-		die("Could not fetch data... (%s)", err)
-	}
-	return res.Projects, res.Items
-}

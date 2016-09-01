@@ -35,8 +35,8 @@ func ProjectCommands(client *todoist.Client) cli.Command {
 
 	var displayOne = func(c *cli.Context) error {
 		id := parseInt(c.Args().Get(0))
-		projects, _ := fetchProjectsAndItems(client)
-		project := todoist.ProjectWithId(projects, id)
+		res := requireReadResult(client, todoist.AllProjectsAndItemsRequest)
+		project := todoist.ProjectWithId(res.Projects, id)
 		if project != nil {
 			displayProject(project, false)
 			displayProjectItems(project)

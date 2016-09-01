@@ -39,7 +39,6 @@ func (r *WriteResult) UnmarshalJson(bytes []byte) error {
 // Validate writes.
 func (r *WriteResult) ValidateResponse() error {
 	status := r.SyncStatus
-	fmt.Println(status)
 	for k, v := range status {
 		if v != "ok" {
 			return errors.New(k)

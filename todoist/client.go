@@ -29,9 +29,9 @@ func (c Client) baseParams() RequestParams {
 }
 
 // Performs the given request, providing the response in the passed in object.
-// Response objects must know how to parse themselves from JSON.
+// Response objects must know how to parse themselves from JSON and validate.
 // Will short-circuit and return an error if one occurred during the request.
-func (c Client) MakeRequest(req RequestParams, res ResponseUnmarshaler) (err error) {
+func (c Client) MakeRequest(req RequestParams, res Responser) (err error) {
 	// Build parameter set.
 	params := c.baseParams()
 
@@ -53,6 +53,11 @@ func (c Client) MakeRequest(req RequestParams, res ResponseUnmarshaler) (err err
 	}
 
 	if err = res.UnmarshalJson(body); err != nil {
+		return
+	}
+
+	// Perform JSON validation.
+	if err = res.ValidateResponse(); err != nil {
 		return
 	}
 

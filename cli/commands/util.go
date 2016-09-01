@@ -45,7 +45,7 @@ func die(format string, a ...interface{}) {
 func requireWriteResult(c *todoist.Client, req todoist.RequestParams) *todoist.WriteResult {
 	res := new(todoist.WriteResult)
 	if err := c.MakeRequest(req, res); err != nil {
-		die("Networking error (%s)...", err)
+		die("Operation failed (%s)...", err)
 	}
 	return res
 }
@@ -53,7 +53,7 @@ func requireWriteResult(c *todoist.Client, req todoist.RequestParams) *todoist.W
 func requireReadResult(c *todoist.Client, req todoist.RequestParams) *todoist.ReadResult {
 	res := new(todoist.ReadResult)
 	if err := c.MakeRequest(req, res); err != nil {
-		die("Networking error (%s)...", err)
+		die("Operation failed (%s)...", err)
 	}
 	return res
 }

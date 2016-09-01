@@ -2,12 +2,24 @@ package todoist
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 )
+
+// Describes a type that determines if the response was valid.
+type ResponseValidator interface {
+	ValidateResponse() error
+}
 
 // Describes a type that may be unmarshaled via JSON response data.
 type ResponseUnmarshaler interface {
 	UnmarshalJson(bytes []byte) error
+}
+
+// A full response object.
+type Responser interface {
+	ResponseValidator
+	ResponseUnmarshaler
 }
 
 // Represents a write request result.
@@ -20,6 +32,18 @@ type WriteResult struct {
 func (r *WriteResult) UnmarshalJson(bytes []byte) error {
 	if err := json.Unmarshal(bytes, r); err != nil {
 		return err
+	}
+	return nil
+}
+
+// Validate writes.
+func (r *WriteResult) ValidateResponse() error {
+	status := r.SyncStatus
+	fmt.Println(status)
+	for k, v := range status {
+		if v != "ok" {
+			return errors.New(k)
+		}
 	}
 	return nil
 }
@@ -39,6 +63,11 @@ func (r *ReadResult) UnmarshalJson(bytes []byte) error {
 	}
 
 	r.denormalize()
+	return nil
+}
+
+// Validate reads.
+func (r *ReadResult) ValidateResponse() error {
 	return nil
 }
 

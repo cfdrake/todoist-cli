@@ -116,3 +116,19 @@ func CreateProjectRequest(name string) RequestParams {
 
 	return RequestParams{"commands": {cmd.JsonString()}}
 }
+
+// Request to close a project.
+func CloseProjectRequest(id int) RequestParams {
+	operationUuid := uuid.NewV4().String()
+	idStr := strconv.Itoa(id)
+	cmd := command{
+		Kind:   "project_delete",
+		Uuid:   operationUuid,
+		TempId: nil,
+		Args: map[string]interface{}{
+			"ids": []string{idStr},
+		},
+	}
+
+	return RequestParams{"commands": {cmd.JsonString()}}
+}

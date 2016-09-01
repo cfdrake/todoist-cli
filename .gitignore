@@ -2,3 +2,6 @@
 todoist-cli
 todoist-cli_*
 todoist-cli-*
+
+# Vim files
+.*.swp

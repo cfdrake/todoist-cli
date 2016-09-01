@@ -47,7 +47,12 @@ func ProjectCommands(client *todoist.Client) cli.Command {
 	}
 
 	var create = func(c *cli.Context) error {
-		fmt.Println("create")
+		if name := c.Args().Get(0); name != "" {
+			requireWriteResult(client, todoist.CreateProjectRequest(name))
+		} else {
+			die("Project name required...")
+		}
+
 		return nil
 	}
 

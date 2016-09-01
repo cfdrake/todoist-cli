@@ -40,6 +40,7 @@ The following is a list of currently supported commands:
 ```
 todoist-cli projects             (alias for list)
 todoist-cli projects list
+todoist-cli projects new <name>
 todoist-cli projects show <id>
 todoist-cli items                (alias for list)
 todoist-cli items list

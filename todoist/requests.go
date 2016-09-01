@@ -100,3 +100,19 @@ func CreateItemRequest(content string, projectId int) RequestParams {
 
 	return RequestParams{"commands": {cmd.JsonString()}}
 }
+
+// Request to create a project.
+func CreateProjectRequest(name string) RequestParams {
+	operationUuid := uuid.NewV4().String()
+	tempId := uuid.NewV4().String()
+	cmd := command{
+		Kind:   "project_add",
+		Uuid:   operationUuid,
+		TempId: &tempId,
+		Args: map[string]interface{}{
+			"name": name,
+		},
+	}
+
+	return RequestParams{"commands": {cmd.JsonString()}}
+}

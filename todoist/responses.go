@@ -11,7 +11,9 @@ type ResponseUnmarshaler interface {
 }
 
 // Represents a write request result.
-type WriteResult struct{}
+type WriteResult struct {
+	SyncStatus map[string]string `json:"sync_status"`
+}
 
 // Unpacks a write result from a JSON representation.
 // Ensures this type adheres to JsonUnmarshaler.

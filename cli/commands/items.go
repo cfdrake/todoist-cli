@@ -34,7 +34,7 @@ func ItemCommands(client *todoist.Client) cli.Command {
 
 	var close = func(c *cli.Context) error {
 		id := parseInt(c.Args().Get(0))
-		_ = requireWriteResult(client, todoist.CompleteItemRequest(id))
+		requireWriteResult(client, todoist.CompleteItemRequest(id))
 		fmt.Println("Closing item...")
 		return nil
 	}
